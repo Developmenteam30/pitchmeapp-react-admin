@@ -199,7 +199,7 @@ const routes = [
   },
 
   {
-    path: "/industryeditpost",
+    path: "/industryeditpost/:_id",
     exact: true,
     name: "Edit Industry",
     component: IndustryEditPost,
@@ -213,7 +213,7 @@ const routes = [
   },
 
   {
-    path: "/posts/edit/:_id",
+    path: "/services/edit/:_id",
     exact: true,
     name: "Edit posts",
     component: ServicesEditPost,

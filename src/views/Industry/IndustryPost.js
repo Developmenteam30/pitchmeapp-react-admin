@@ -17,34 +17,34 @@ import {
   Table,
 } from "reactstrap";
 import swal from "sweetalert";
-import { addNewPost, getUserList, deletePost } from "../../actions/userActions";
+import { addNewPost, getIndustryList, deleteIndustry } from "../../actions/userActions";
 import img from "../../assets/img/8.jpg";
 import vid from "../../assets/img/XRecorder_31032022_110516.mp4";
 import Switch from "react-switch";
 const IndustryPost = (props) => {
-  const { getUserList, posts, deletePost } = props;
+  const { getIndustryList, posts, deleteIndustry } = props;
   const [search, setSearch] = useState("");
   const [pageLimit, setPageLimit] = useState(10);
   const [pageLength, setPageLength] = useState(1);
   const [type, setType] = useState("");
  const [checked, setChecked] = useState(false);
   useEffect(() => {
-    getUserList(pageLength, pageLimit, "", type);
-  }, [pageLength, pageLimit, getUserList, type]);
+    getIndustryList(pageLength, pageLimit, "", type);
+  }, [pageLength, pageLimit, getIndustryList, type]);
 
-  const onDeletePost = (post) => {
+  const onDeleteIndustry = (post) => {
     swal({
       title: "Are you sure?",
-      text: `Are you sure that you want to delete post ${post.title} ?`,
+      text: `Are you sure that you want to delete post ${post.name} ?`,
       icon: "warning",
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        deletePost(post._id)
+        deleteIndustry(post._id)
           .then((result) => {
             toast.success(result.data.message);
-            getUserList(pageLength, pageLimit, "", type);
+            getIndustryList(pageLength, pageLimit, "", type);
           })
           .catch((err) => {
             if (err.response !== undefined) {
@@ -69,18 +69,18 @@ const IndustryPost = (props) => {
   const onFieldKeyPress = (e) => {
     if (e.target.name === "search") {
       if (e.key === "Enter") {
-        getUserList(pageLength, pageLimit, e.target.value, type);
+        getIndustryList(pageLength, pageLimit, e.target.value, type);
       }
     }
   };
 
   const onPageClick = (page) => {
-    getUserList(page, pageLimit, "", type);
+    getIndustryList(page, pageLimit, "", type);
   };
 
   const handleClearSearch = () => {
     setSearch("");
-    getUserList(pageLength, pageLimit, "", type);
+    getIndustryList(pageLength, pageLimit, "", type);
   };
 
   const paginationSection = (data) => {
@@ -157,8 +157,8 @@ const IndustryPost = (props) => {
     );
   };
 
-  const { post, userDetailLoading } = posts;
-  let { page } = post;
+  const { industry, userDetailLoading } = posts;
+  let { page } = industry;
   page = page - 1;
 
   const containerStyle = {
@@ -259,29 +259,21 @@ const IndustryPost = (props) => {
                 <thead>
                   <tr className="postsRow">
                     <th>Sr. No.</th>
-                    {/* <th>Title</th> */}
                     <th>Industry name</th>
                     <th style={{ float: "right" }} className="pr-5">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {post.docs.length
-                    ? post.docs.map((obj, indx) => (
+                  {industry.docs.length
+                    ? industry.docs.map((obj, indx) => (
                         <tr key={indx}>
                           <td>{page * 10 + indx + 1}</td>
-                          {/* <td>{obj.title}</td> */}
-                          <td>
-                            {obj.type == 1
-                              ? "Article"
-                              : obj.type == 2
-                              ? "Image"
-                              : "Video"}
-                          </td>
-                          <td  align="right"  style={{paddingRight:70}}>
+                          <td>{obj.name}</td>
+                          <td  align="right"  style={{paddingRight:30}}>
                             <Link
                               to={{
-                                pathname:'industryeditpost',
-                                // pathname: `/posts/edit/${obj._id}`,
+                                // pathname:'industryeditpost',
+                                pathname: `/industryeditpost/${obj._id}`,
                                 state: { obj },
                               }}
                             >
@@ -311,13 +303,13 @@ const IndustryPost = (props) => {
                               <Button
                                 size="md"
                                 className="ml-2 btn-danger"
-                                onClick={() => onDeletePost(obj)}
+                                onClick={() => onDeleteIndustry(obj)}
                                 type="button"
                               >
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                               </Button>
                             </Tooltip>
-                            <span style={{position:"absolute"}}>
+                            {/* <span style={{position:"absolute"}}>
                             <Tooltip
                               title="Enable/Disable"
                               position="bottom"
@@ -332,7 +324,7 @@ const IndustryPost = (props) => {
                                 inputProps={{ 'aria-label': 'controlled', }}
                               />
                               </Tooltip>
-                              </span>
+                              </span> */}
                           </td>
                         </tr>
                       ))
@@ -341,138 +333,14 @@ const IndustryPost = (props) => {
                       // </div>
                       ""}
                 </tbody>
-                {/* <tr>
-                    <td>Today's Posts</td>
-                    <td>Article</td>
-                    <td>
-                      <Link to={`/posts/edit`}>
-                        <Tooltip
-                          title="Edit Post"
-                          position="bottom"
-                          arrow={true}
-                          distance={15}
-                          trigger="mouseenter"
-                        >
-                          <Button
-                            size="md"
-                            className="btn-spotify btn-brand ml-2"
-                            type="button"
-                          >
-                            <i className="fa fa-pencil"></i>
-                          </Button>
-                        </Tooltip>
-                      </Link>
-                      <Tooltip
-                        title="Delete Post"
-                        position="bottom"
-                        arrow={true}
-                        distance={15}
-                        trigger="mouseenter"
-                      >
-                        <Button
-                          size="md"
-                          className="btn-youtube btn cncllBtn ml-2"
-                          onClick={() => onDeleteUser()}
-                          type="button"
-                        >
-                          <i className="fa fa-trash"></i>
-                        </Button>
-                      </Tooltip>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Today's Image</td>
-                    <td>Image</td>
-                    <td>
-                      <Link to={`/posts/edit`}>
-                        <Tooltip
-                          title="Edit Post"
-                          position="bottom"
-                          arrow={true}
-                          distance={15}
-                          trigger="mouseenter"
-                        >
-                          <Button
-                            size="md"
-                            className="btn-spotify btn-brand ml-2"
-                            type="button"
-                          >
-                            <i className="fa fa-pencil"></i>
-                          </Button>
-                        </Tooltip>
-                      </Link>
-                      <Tooltip
-                        title="Delete Post"
-                        position="bottom"
-                        arrow={true}
-                        distance={15}
-                        trigger="mouseenter"
-                      >
-                        <Button
-                          size="md"
-                          className="btn-youtube btn cncllBtn ml-2"
-                          onClick={() => onDeleteUser()}
-                          type="button"
-                        >
-                          <i className="fa fa-trash"></i>
-                        </Button>
-                      </Tooltip>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Today's Video</td>
-                    <td>Video</td>
-                    <td>
-                      <Link to={`/posts/edit`}>
-                        <Tooltip
-                          title="Edit Post"
-                          position="bottom"
-                          arrow={true}
-                          distance={15}
-                          trigger="mouseenter"
-                        >
-                          <Button
-                            size="md"
-                            className="btn-spotify btn-brand ml-2"
-                            type="button"
-                          >
-                            <i className="fa fa-pencil"></i>
-                          </Button>
-                        </Tooltip>
-                      </Link>
-                      <Tooltip
-                        title="Delete Post"
-                        position="bottom"
-                        arrow={true}
-                        distance={15}
-                        trigger="mouseenter"
-                      >
-                        <Button
-                          size="md"
-                          className="btn-youtubebtn btn cncllBtn ml-2"
-                          onClick={() => onDeleteUser()}
-                          type="button"
-                        >
-                          <i className="fa fa-trash"></i>
-                        </Button>
-                      </Tooltip>
-                    </td>
-                  </tr> */}
 
-                {/* <tfoot>
-                  <tr>
-                    <th>Title</th>
-                    <th>Type</th>
-                    <th>Action</th>
-                  </tr>
-                </tfoot> */}
               </Table>
-              {!post.docs.length && (
+              {!industry.docs.length && (
                 <center style={{ fontSize: 20 }}>No record found</center>
               )}
 
               <div className="row float-right">
-                <div className="col-md-12 ">{paginationSection(post)}</div>
+                <div className="col-md-12 ">{paginationSection(industry)}</div>
               </div>
             </CardBody>
           </Card>
@@ -487,6 +355,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  getUserList,
-  deletePost,
+  getIndustryList,
+  deleteIndustry,
 })(IndustryPost);

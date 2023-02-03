@@ -3,11 +3,13 @@ import {
   USER_DETAILS,
   USER_LIST,
   USER_POST,
+  USER_INDUSTRY,
   USER_BLOG,
   USER_EV_JOURNEY,
   USER_CAR_REVIEW,
   USER_OWNED_VEHICALS,
   GET_ALL_USERS,
+  USER_SERVICES,
 } from "./types";
 const PROXY = process.env.REACT_APP_URL + "api/";
 
@@ -71,6 +73,17 @@ export const getPostDetail = (id) => async (dispatch) => {
   return res;
 };
 
+
+export const getIndustryDetail = (id) => async (dispatch) => {
+  const res = await axios.get(PROXY + "industry/detail/" + id);
+  return res;
+};
+
+export const getServicesDetail = (id) => async (dispatch) => {
+  const res = await axios.get(PROXY + "services/detail/" + id);
+  return res;
+};
+
 export const getUserDropDownList = () => async (dispatch) => {
   const res = await axios.get(PROXY + "user");
   dispatch({
@@ -108,8 +121,70 @@ export const addNewPost = (formData) => async (dispatch) => {
   return res;
 };
 
+export const getIndustryList = (page, limit, search) => async (dispatch) => {
+  const res = await axios.get(
+    PROXY +
+      "industry?&page=" +
+      page +
+      "&limit=" +
+      limit +
+      "&search=" +
+      search
+  );
+  dispatch({
+    type: USER_INDUSTRY,
+    payload: res.data.result,
+  });
+};
+
+export const getServicesList = (page, limit, search) => async (dispatch) => {
+  const res = await axios.get(
+    PROXY +
+      "services?&page=" +
+      page +
+      "&limit=" +
+      limit +
+      "&search=" +
+      search
+  );
+  dispatch({
+    type: USER_SERVICES,
+    payload: res.data.result,
+  });
+};
+
+export const addNewIndustry = (formData) => async (dispatch) => {
+  const res = await axios.post(PROXY + "industry", formData);
+  return res;
+};
+
+export const addNewServices = (formData) => async (dispatch) => {
+  const res = await axios.post(PROXY + "services", formData);
+  return res;
+};
+
+export const deleteIndustry = (id) => async (dispatch) => {
+  const res = await axios.delete(PROXY + "industry/" + id);
+  return res;
+};
+
+export const deleteServices = (id) => async (dispatch) => {
+  const res = await axios.delete(PROXY + "services/" + id);
+  return res;
+};
+
 export const updateUserPost = (id, formData) => async (dispatch) => {
   const res = await axios.put(PROXY + "post/update/" + id, formData);
+  return res;
+};
+
+export const updateUserIndustry = (id, formData) => async (dispatch) => {
+  const res = await axios.put(PROXY + "industry/update/" + id, formData);
+  return res;
+};
+
+export const updateUserServices = (id, formData) => async (dispatch) => {
+  const res = await axios.put(PROXY + "services/update/" + id, formData);
   return res;
 };
 

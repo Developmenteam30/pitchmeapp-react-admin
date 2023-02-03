@@ -15,7 +15,7 @@ import "quill/dist/quill.snow.css";
 import Dropzone from "react-dropzone";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
-import { addNewPost } from "../../actions/userActions";
+import { addNewServices } from "../../actions/userActions";
 import { connect } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -124,68 +124,23 @@ const ServicesAddPost = (props) => {
   };
 
   const onSubmitForm = () => {
-    if (type === "") {
+    if (type === "" || content === "") {
       seterrors({
-        errorType: "Type is required",
+        errorType: "Type and content is required",
       });
-    } else if (type == 1 && content === "") {
-      seterrors({
-        errorFile: "Required field",
-      });
-    } 
-    else if (type == 4 && content === "") {
-      seterrors({
-        errorFile: "Required field",
-      });
-    }
-    else if (type == 5 && content === "") {
-      seterrors({
-        errorFile: "Required field",
-      });
-    }
-    else if (type != 1 && !fileName) {
-      seterrors({
-        errorFile: "Required field",
-      });
-    } else if (
-      type != 1 &&
-      !fileName.match(
-        /\.(PNG||png||JPEG||jpeg||MP4||mp4||jpg||mov||MOV||gif||GIF)$/
-      )
-    ) {
-      if (type == "2") {
-        seterrors({
-          errorFile: "Only jpeg, jpg, png and GIF file format allowed",
-        });
-      }
-
-      if (type == "3") {
-        seterrors({
-          errorFile: "Only mp4 and mov file format allowed",
-        });
-      }
     } else {
-      const formData = new FormData();
-      // formData.append("title", title);
-      formData.append("type", type);
-
-      if (type == 1) {
-        formData.append("text", content);
-      } 
-       if (type == 4) {
-        formData.append("text", content);
-      } 
-       if (type == 5) {
-        formData.append("text", content);
-      } 
-      else {
-        formData.append("file", imagePreviewUrl);
+      // const formData = new FormData();
+      // // formData.append("title", title);
+      // formData.append("type", type);
+      const formData = {
+        type: type,
+        name: content
       }
       props
-        .addNewPost(formData)
+        .addNewServices(formData)
         .then((res) => {
           // toast.success(res.data.message);
-          toast.success("service post added successfully");
+          toast.success("service added successfully");
           setTimeout(() => {
             props.history.push(`/ServicesPost`);
           }, 1300);
@@ -254,16 +209,16 @@ const ServicesAddPost = (props) => {
                       className="form-control"
                     >
                       <option value={""}>Select Type</option>
-                      <option value={1}>Service</option>
-                      <option value={4}>Connection</option>
-                      <option value={5}>Skill</option>
+                      <option value={"Service"}>Service</option>
+                      <option value={"Connection"}>Connection</option>
+                      <option value={"Skill"}>Skill</option>
                     </select>
                     {errors.errorType && (
                       <span className="invalid-text ">{errors.errorType}</span>
                     )}
                   </Col>
                 </FormGroup>
-                {type == 1 && (
+                {type && (
                   <FormGroup row>
                     <Col xs="12">
                       <label>
@@ -273,7 +228,7 @@ const ServicesAddPost = (props) => {
                         name="content"
                         placeholder="Enter Content"
                         value={content}
-                        onChange={(e) => onContentChange(e)}
+                        onChange={(e) => onContentChange(e.target.value)}
                         modules={modules}
                         style={{
                           insetInlineStart: "10",
@@ -288,122 +243,7 @@ const ServicesAddPost = (props) => {
                     </Col>
                   </FormGroup>
                 )}
-                {type == 2 && (
-                  <FormGroup row>
-                    <Col xs="12">
-                      <label>
-                        Image<span className="required">*</span>
-                      </label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleFileChange(e)}
-                        capture="camera"
-                        style={{ height: "auto" }}
-                        className={classnames("form-control-file")}
-                      />
-                      <img src={imagePreview} className="showProfile" />
-                      {errors.errorFile && (
-                        <span className="invalid-text">{errors.errorFile}</span>
-                      )}
-                      <div>
-                        <label className="mt-1">
-                          Note: Only jpeg, jpg, png and GIF file format only,
-                          Maximum 10MB file size allowed
-                        </label>
-                      </div>
-                      {/* <div>
-                        <label className="mt-1">
-                         
-                        </label>
-                      </div> */}
-                    </Col>
-                  </FormGroup>
-                )}
-                {type == 3 && (
-                  <FormGroup row>
-                    <Col xs="12">
-                      <label>
-                        Video<span className="required">*</span>
-                      </label>
-                      <input
-                        type="file"
-                        accept="video/*"
-                        onChange={(e) => handleFileChange(e)}
-                        capture="camera"
-                        style={{ height: "auto" }}
-                        className={classnames("form-control-file")}
-                      />
-                      {imagePreview && (
-                        <video
-                          className="mt-2"
-                          height={150}
-                          width={250}
-                          controls
-                          src={imagePreview}
-                        />
-                      )}
-                      {errors.errorFile && (
-                        <label className="invalid-text my-1">
-                          {errors.errorFile}
-                        </label>
-                      )}
-                      <div className="mt-3">
-                        <label>Note: Maximum 10MB file size allowed</label>
-                      </div>
-                    </Col>
-                  </FormGroup>
-                )}
-                 {type == 4 && (
-                  <FormGroup row>
-                    <Col xs="12">
-                      <label>
-                        Content<span className="required">*</span>
-                      </label>
-                     <Input
-                        name="content"
-                        placeholder="Enter Content"
-                        value={content}
-                        onChange={(e) => onContentChange(e)}
-                        modules={modules}
-                        style={{
-                          insetInlineStart: "10",
-                          height: "50px",
-                          width:"510px",
-                          marginBottom: "59px",
-                        }}
-                      />
-                      {errors.errorFile && (
-                        <span className="invalid-text">{errors.errorFile}</span>
-                      )}
-                    </Col>
-                  </FormGroup>
-                )}
-                 {type == 5 && (
-                  <FormGroup row>
-                    <Col xs="12">
-                      <label>
-                        Content<span className="required">*</span>
-                      </label>
-                     <Input
-                        name="content"
-                        placeholder="Enter Content"
-                        value={content}
-                        onChange={(e) => onContentChange(e)}
-                        modules={modules}
-                        style={{
-                          insetInlineStart: "10",
-                          height: "50px",
-                          width:"510px",
-                          marginBottom: "59px",
-                        }}
-                      />
-                      {errors.errorFile && (
-                        <span className="invalid-text">{errors.errorFile}</span>
-                      )}
-                    </Col>
-                  </FormGroup>
-                )}
+
                 <Row>
                   <div className="w-100 float-left mt-1 ml-3">
                     <LaddaButton
@@ -441,5 +281,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  addNewPost,
+  addNewServices,
 })(ServicesAddPost);

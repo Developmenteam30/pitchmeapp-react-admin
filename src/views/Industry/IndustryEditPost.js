@@ -15,7 +15,7 @@ import "quill/dist/quill.snow.css";
 import Dropzone from "react-dropzone";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
-import { getPostDetail, updateUserPost } from "../../actions/userActions";
+import { getIndustryDetail, updateUserIndustry } from "../../actions/userActions";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -26,13 +26,11 @@ const IndustryEditPost = (props) => {
   const [postData, setPostData] = useState();
 
   useEffect(() => {
-    props.getPostDetail(_id).then((res) => {
+    props.getIndustryDetail(_id).then((res) => {
       const data = res?.data?.result;
       setPostData(data[0]);
       // setTitle(res.data.result[0].title);
-      setContent(res.data.result[0].text);
-      setType(res.data.result[0].type);
-      setCurrentFile(res.data.result[0].file);
+      setContent(res.data.result[0].name);
     });
   }, []);
 
@@ -145,56 +143,21 @@ const IndustryEditPost = (props) => {
   };
 
   const onSubmitForm = () => {
-    if (type === "") {
+    if (content === "") {
       seterrors({
-        errorType: "Type is required",
+        errorType: "Content is required",
       });
-    } else if (type == 1 && content === "") {
-      seterrors({
-        errorFile: "Required field",
-      });
-    }
-    // else if (type != 1 && !fileName) {
-    //   seterrors({
-    //     errorFile: "Required field",
-    //   });
-    // }
-    else if (
-      type != 1 &&
-      !fileName.match(
-        /\.(PNG||png||JPEG||jpeg||MP4||mp4||jpg||mov||MOV||gif||GIF)$/
-      ) &&
-      fileName !== ""
-    ) {
-      if (type == "2") {
-        seterrors({
-          errorFile: "Only jpeg, jpg, png and GIF file format allowed",
-        });
-      }
-
-      if (type == "3") {
-        seterrors({
-          errorFile: "Only mp4 and file format allowed",
-        });
-      }
     } else {
-      const formData = new FormData();
-      // formData.append("title", title);
-      formData.append("type", type);
-
-      if (type == 1) {
-        formData.append("text", content);
-      } else {
-        formData.append("file", imagePreviewUrl);
-      }
-
+      // const formData = new FormData();
+      // formData.append("text", content);
+      const formData = {"name": content};
       props
-        .updateUserPost(_id, formData)
+        .updateUserIndustry(_id, formData)
         .then((res) => {
           // toast.success(res.data.message);
-          toast.success("Post edited successfully");
+          toast.success("Industry edited successfully");
           setTimeout(() => {
-            props.history.push(`/posts`);
+            props.history.push(`/IndustryPost`);
           }, 1300);
         })
         .catch((err) => console.log("err", err));
@@ -252,7 +215,7 @@ const IndustryEditPost = (props) => {
                         name="content"
                         placeholder="Enter Industry"
                         value={content}
-                        onChange={(e) => onContentChange(e)}
+                        onChange={(e) => onContentChange(e.target.value)}
                         modules={modules}
                         style={{
                           insetInlineStart: "10",
@@ -412,6 +375,6 @@ const mapStateToProps = (state) => ({
   posts: state.posts,
 });
 export default connect(mapStateToProps, {
-  updateUserPost,
-  getPostDetail,
+  updateUserIndustry,
+  getIndustryDetail,
 })(IndustryEditPost);

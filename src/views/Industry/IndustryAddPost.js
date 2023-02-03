@@ -15,7 +15,7 @@ import "quill/dist/quill.snow.css";
 import Dropzone from "react-dropzone";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
-import { addNewPost } from "../../actions/userActions";
+import { addNewIndustry } from "../../actions/userActions";
 import { connect } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -124,65 +124,16 @@ const IndustryAddPost = (props) => {
   };
 
   const onSubmitForm = () => {
-    if (type === "") {
+    if (content === "") {
       seterrors({
-        errorType: "Type is required",
+        errorType: "Name is required",
       });
-    } else if (type == 1 && content === "") {
-      seterrors({
-        errorFile: "Required field",
-      });
-    } 
-    else if (type == 4 && content === "") {
-      seterrors({
-        errorFile: "Required field",
-      });
-    }
-    else if (type == 5 && content === "") {
-      seterrors({
-        errorFile: "Required field",
-      });
-    }
-    else if (type != 1 && !fileName) {
-      seterrors({
-        errorFile: "Required field",
-      });
-    } else if (
-      type != 1 &&
-      !fileName.match(
-        /\.(PNG||png||JPEG||jpeg||MP4||mp4||jpg||mov||MOV||gif||GIF)$/
-      )
-    ) {
-      if (type == "2") {
-        seterrors({
-          errorFile: "Only jpeg, jpg, png and GIF file format allowed",
-        });
-      }
-
-      if (type == "3") {
-        seterrors({
-          errorFile: "Only mp4 and mov file format allowed",
-        });
-      }
     } else {
-      const formData = new FormData();
-      // formData.append("title", title);
-      formData.append("type", type);
-
-      if (type == 1) {
-        formData.append("text", content);
-      } 
-       if (type == 4) {
-        formData.append("text", content);
-      } 
-       if (type == 5) {
-        formData.append("text", content);
-      } 
-      else {
-        formData.append("file", imagePreviewUrl);
-      }
+      // const formData = new FormData();
+      // formData.append("name", content);
+      const formData = {"name": content};
       props
-        .addNewPost(formData)
+        .addNewIndustry(formData)
         .then((res) => {
           // toast.success(res.data.message);
           toast.success("Industry post added successfully");
@@ -245,7 +196,7 @@ const IndustryAddPost = (props) => {
                         name="content"
                         placeholder="Enter Industry"
                         value={content}
-                        onChange={(e) => onContentChange(e)}
+                        onChange={(e) => onContentChange(e.target.value)}
                         modules={modules}
                         style={{
                           insetInlineStart: "10",
@@ -297,5 +248,5 @@ posts: state.posts,
 });
 
 export default connect(mapStateToProps, {
-  addNewPost,
+  addNewIndustry,
 })(IndustryAddPost);

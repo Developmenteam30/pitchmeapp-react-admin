@@ -17,22 +17,22 @@ import {
   Table,
 } from "reactstrap";
 import swal from "sweetalert";
-import { addNewPost, getUserList, deletePost } from "../../actions/userActions";
+import { addNewPost, getServicesList, deleteServices } from "../../actions/userActions";
 import img from "../../assets/img/8.jpg";
 import vid from "../../assets/img/XRecorder_31032022_110516.mp4";
 
 const ServicesPost = (props) => {
-  const { getUserList, posts, deletePost } = props;
+  const { getServicesList, posts, deleteServices } = props;
   const [search, setSearch] = useState("");
   const [pageLimit, setPageLimit] = useState(10);
   const [pageLength, setPageLength] = useState(1);
   const [type, setType] = useState("");
 
   useEffect(() => {
-    getUserList(pageLength, pageLimit, "", type);
-  }, [pageLength, pageLimit, getUserList, type]);
+    getServicesList(pageLength, pageLimit, "", type);
+  }, [pageLength, pageLimit, getServicesList, type]);
 
-  const onDeletePost = (post) => {
+  const ondeleteServices = (post) => {
     swal({
       title: "Are you sure?",
       text: `Are you sure that you want to delete post ${post.title} ?`,
@@ -41,10 +41,10 @@ const ServicesPost = (props) => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        deletePost(post._id)
+        deleteServices(post._id)
           .then((result) => {
             toast.success(result.data.message);
-            getUserList(pageLength, pageLimit, "", type);
+            getServicesList(pageLength, pageLimit, "", type);
           })
           .catch((err) => {
             if (err.response !== undefined) {
@@ -58,18 +58,18 @@ const ServicesPost = (props) => {
   const onFieldKeyPress = (e) => {
     if (e.target.name === "search") {
       if (e.key === "Enter") {
-        getUserList(pageLength, pageLimit, e.target.value, type);
+        getServicesList(pageLength, pageLimit, e.target.value, type);
       }
     }
   };
 
   const onPageClick = (page) => {
-    getUserList(page, pageLimit, "", type);
+    getServicesList(page, pageLimit, "", type);
   };
 
   const handleClearSearch = () => {
     setSearch("");
-    getUserList(pageLength, pageLimit, "", type);
+    getServicesList(pageLength, pageLimit, "", type);
   };
 
   const paginationSection = (data) => {
@@ -146,8 +146,8 @@ const ServicesPost = (props) => {
     );
   };
 
-  const { post, userDetailLoading } = posts;
-  let { page } = post;
+  const { services, userDetailLoading } = posts;
+  let { page } = services;
   page = page - 1;
 
   const containerStyle = {
@@ -251,28 +251,24 @@ const ServicesPost = (props) => {
                 <thead>
                   <tr className="postsRow">
                     <th>Sr. No.</th>
-                    {/* <th>Title</th> */}
                     <th>Type</th>
+                    <th>Title</th>
                     <th style={{ float: "right" }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {post.docs.length
-                    ? post.docs.map((obj, indx) => (
+                  {services.docs.length
+                    ? services.docs.map((obj, indx) => (
                         <tr key={indx}>
                           <td>{page * 10 + indx + 1}</td>
-                          {/* <td>{obj.title}</td> */}
                           <td>
-                            {obj.type == 1
-                              ? "Article"
-                              : obj.type == 2
-                              ? "Image"
-                              : "Video"}
+                            {obj.type}
                           </td>
+                          <td>{obj.name}</td>
                           <td align="right">
                             <Link
                               to={{
-                                pathname: `/posts/edit/${obj._id}`,
+                                pathname: `/services/edit/${obj._id}`,
                                 state: { obj },
                               }}
                             >
@@ -302,7 +298,7 @@ const ServicesPost = (props) => {
                               <Button
                                 size="md"
                                 className="ml-2 btn-danger"
-                                onClick={() => onDeletePost(obj)}
+                                onClick={() => ondeleteServices(obj)}
                                 type="button"
                               >
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -442,12 +438,12 @@ const ServicesPost = (props) => {
                   </tr>
                 </tfoot> */}
               </Table>
-              {!post.docs.length && (
+              {!services.docs.length && (
                 <center style={{ fontSize: 20 }}>No record found</center>
               )}
 
               <div className="row float-right">
-                <div className="col-md-12 ">{paginationSection(post)}</div>
+                <div className="col-md-12 ">{paginationSection(services)}</div>
               </div>
             </CardBody>
           </Card>
@@ -462,6 +458,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  getUserList,
-  deletePost,
+  getServicesList,
+  deleteServices,
 })(ServicesPost);

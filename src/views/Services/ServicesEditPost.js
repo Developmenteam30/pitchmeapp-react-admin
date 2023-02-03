@@ -15,7 +15,7 @@ import "quill/dist/quill.snow.css";
 import Dropzone from "react-dropzone";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
-import { getPostDetail, updateUserPost } from "../../actions/userActions";
+import { getServicesDetail, updateUserServices } from "../../actions/userActions";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -26,13 +26,12 @@ const ServicesEditPost = (props) => {
   const [postData, setPostData] = useState();
 
   useEffect(() => {
-    props.getPostDetail(_id).then((res) => {
+    props.getServicesDetail(_id).then((res) => {
       const data = res?.data?.result;
       setPostData(data[0]);
       // setTitle(res.data.result[0].title);
-      setContent(res.data.result[0].text);
+      setContent(res.data.result[0].name);
       setType(res.data.result[0].type);
-      setCurrentFile(res.data.result[0].file);
     });
   }, []);
 
@@ -145,56 +144,25 @@ const ServicesEditPost = (props) => {
   };
 
   const onSubmitForm = () => {
-    if (type === "") {
+    if (type === "" || content === "") {
       seterrors({
-        errorType: "Type is required",
+        errorType: "Type and content are required",
       });
-    } else if (type == 1 && content === "") {
-      seterrors({
-        errorFile: "Required field",
-      });
-    }
-    // else if (type != 1 && !fileName) {
-    //   seterrors({
-    //     errorFile: "Required field",
-    //   });
-    // }
-    else if (
-      type != 1 &&
-      !fileName.match(
-        /\.(PNG||png||JPEG||jpeg||MP4||mp4||jpg||mov||MOV||gif||GIF)$/
-      ) &&
-      fileName !== ""
-    ) {
-      if (type == "2") {
-        seterrors({
-          errorFile: "Only jpeg, jpg, png and GIF file format allowed",
-        });
-      }
-
-      if (type == "3") {
-        seterrors({
-          errorFile: "Only mp4 and file format allowed",
-        });
-      }
     } else {
-      const formData = new FormData();
-      // formData.append("title", title);
-      formData.append("type", type);
-
-      if (type == 1) {
-        formData.append("text", content);
-      } else {
-        formData.append("file", imagePreviewUrl);
+      // const formData = new FormData();
+      // // formData.append("title", title);
+      // formData.append("type", type);
+      const formData = {
+        type: type,
+        name: content
       }
-
       props
-        .updateUserPost(_id, formData)
+        .updateUserServices(_id, formData)
         .then((res) => {
           // toast.success(res.data.message);
-          toast.success("Post edited successfully");
+          toast.success("Service edited successfully");
           setTimeout(() => {
-            props.history.push(`/posts`);
+            props.history.push(`/ServicesPost`);
           }, 1300);
         })
         .catch((err) => console.log("err", err));
@@ -262,16 +230,16 @@ const ServicesEditPost = (props) => {
                     >
                       <option value={""}>Select Type</option>
 
-                      <option value={1}>Article</option>
-                      <option value={2}>Image</option>
-                      <option value={3}>Video</option>
+                      <option value={"Service"}>Service</option>
+                      <option value={"Connection"}>Connection</option>
+                      <option value={"Skill"}>Skill</option>
                     </select>
                     {errors.errorType && (
                       <span className="invalid-text ">{errors.errorType}</span>
                     )}
                   </Col>
                 </FormGroup>
-                {type == 1 && (
+                {type && (
                   <FormGroup row>
                     <Col xs="12">
                       <label>
@@ -297,90 +265,7 @@ const ServicesEditPost = (props) => {
                     </Col>
                   </FormGroup>
                 )}
-                {type == 2 && (
-                  <FormGroup row>
-                    <Col xs="12">
-                      <label>
-                        Image<span className="required">*</span>
-                      </label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleFileChange(e)}
-                        capture="camera"
-                        style={{ height: "auto" }}
-                        className={classnames("form-control-file")}
-                      />
-                      <div>
-                        <label className="mt-1">
-                          Note: Only jpeg, jpg, png and GIF file format only,
-                          Maximum 10MB file size allowed
-                        </label>
-                      </div>
-                      {imagePreview && (
-                        <img src={imagePreview} className="showProfile" />
-                      )}{" "}
-                      {isImage.test(currentFile) && (
-                        <img src={currentFile} className="showProfile" />
-                      )}
-                      {/* <img src={imagePreview} className="showProfile" /> */}
-                      {errors.errorFile && (
-                        <div>
-                          <span className="invalid-text ">
-                            {errors.errorFile}
-                          </span>
-                        </div>
-                      )}
-                    </Col>
-                  </FormGroup>
-                )}
-                {type == 3 && (
-                  <FormGroup row>
-                    <Col xs="12">
-                      <label>
-                        Video<span className="required">*</span>
-                      </label>
-                      <input
-                        type="file"
-                        accept="video/*"
-                        onChange={(e) => handleFileChange(e)}
-                        capture="camera"
-                        style={{ height: "auto" }}
-                        className={classnames("form-control-file")}
-                      />
-                      <div className="mt-3">
-                        <label>Note: Maximum 10MB file size allowed</label>
-                      </div>
-                      {imagePreview && (
-                        <video
-                          className="mt-2"
-                          height={150}
-                          width={250}
-                          controls
-                          src={imagePreview}
-                        />
-                      )}
-                      {(currentFile.includes("mp4") ||
-                        currentFile.includes("mov")) && (
-                        <video
-                          src={currentFile}
-                          height={150}
-                          width={250}
-                          className="mt-2"
-                          controls
-                        />
-                      )}
 
-                      {errors.errorFile && (
-                        <div>
-                          <span className="invalid-text ">
-                            {errors.errorFile}
-                          </span>
-                        </div>
-                      )}
-                    </Col>
-                  </FormGroup>
-                )}
                 <Row>
                   <div className="w-100 float-left mt-3 ml-3">
                     <LaddaButton
@@ -417,6 +302,6 @@ const mapStateToProps = (state) => ({
   posts: state.posts,
 });
 export default connect(mapStateToProps, {
-  updateUserPost,
-  getPostDetail,
+  updateUserServices,
+  getServicesDetail,
 })(ServicesEditPost);
