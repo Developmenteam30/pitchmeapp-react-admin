@@ -9,6 +9,8 @@ import AddNewVehicle from "./views/Vehicle/AddNewVehical";
 // Industry Component
 import Industry from "./views/Industry/IndustryPost";
 import Services from "./views/Services/ServicesPost"
+import Salespitch from "./views/Salespitch/Salespitch";
+import EditSalespitch from "./views/Salespitch/EditSalespitch";
 const IndustryPost = React.lazy(() => import("./views/Industry/IndustryPost"));
 const IndustryAddPost = React.lazy(() => import("./views/Industry/IndustryAddPost"));
 const IndustryEditPost = React.lazy(() => import("./views/Industry/IndustryEditPost"));
@@ -217,6 +219,18 @@ const routes = [
     exact: true,
     name: "Edit posts",
     component: ServicesEditPost,
+  },
+  {
+    path: "/salespitch/edit/:_id",
+    exact: true,
+    name: "Edit sales pitch",
+    component: EditSalespitch,
+  },
+  {
+    path: "/salespitch",
+    exact: true,
+    name: "Salespitch",
+    component: Salespitch,
   },
 ];
 

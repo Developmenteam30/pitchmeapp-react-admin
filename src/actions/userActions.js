@@ -10,6 +10,7 @@ import {
   USER_OWNED_VEHICALS,
   GET_ALL_USERS,
   USER_SERVICES,
+  USER_SALESPITCH
 } from "./types";
 const PROXY = process.env.REACT_APP_URL + "api/";
 
@@ -121,6 +122,29 @@ export const addNewPost = (formData) => async (dispatch) => {
   return res;
 };
 
+export const getUserSalespitch = (page, limit, search) => async (dispatch) => {
+  const res = await axios.get(
+    PROXY +
+      "salespitch?&page=" +
+      page +
+      "&limit=" +
+      limit
+  );
+  dispatch({
+    type: USER_SALESPITCH,
+    payload: res.data.result,
+  });
+};
+
+export const deleteUserSalespitch = (id) => async (dispatch) => {
+  const res = await axios.delete(PROXY + "user/salespitch/" + id);
+  return res;
+};
+
+export const addNewSalespitch = (formData) => async (dispatch) => {
+  const res = await axios.post(PROXY + "salespitch", formData);
+  return res;
+};
 export const getIndustryList = (page, limit, search) => async (dispatch) => {
   const res = await axios.get(
     PROXY +

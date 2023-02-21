@@ -22,6 +22,12 @@ export default {
       
     },
     {
+      name: "Salespitch",
+      url: "/Salespitch",
+      icon: "fa fa-users",
+      
+    },
+    {
       name: "Settings",
       url: "/settings",
       icon: "icon-settings",

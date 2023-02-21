@@ -47,6 +47,7 @@ export const VEHICLE_VIDEOS = "VEHICLE_VIDEOS";
 export const USER_LIST = "USER_LIST";
 export const USER_DETAILS = "USER_DETAILS";
 export const USER_POST = "USER_POST";
+export const USER_SALESPITCH = "USER_SALESPITCH";
 export const USER_INDUSTRY = "USER_INDUSTRY";
 export const USER_SERVICES = "USER_SERVICES";
 export const USER_BLOG = "USER_BLOG";

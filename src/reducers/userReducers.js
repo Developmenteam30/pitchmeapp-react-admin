@@ -9,8 +9,21 @@ import {
   USER_OWNED_VEHICALS,
   GET_ALL_USERS,
   USER_SERVICES,
+  USER_SALESPITCH,
 } from "../actions/types";
 const initialState = {
+  salespitch: {
+    docs: [],
+    totalDocs: 0,
+    limit: 0,
+    page: 0,
+    totalPages: 0,
+    pagingCounter: 0,
+    hasPrevPage: false,
+    hasNextPage: false,
+    prevPage: null,
+    nextPage: null,
+  },
   post: {
     docs: [],
     totalDocs: 0,
@@ -143,6 +156,8 @@ const userDetailReducers = (state = initialState, action) => {
       return { ...state, userPostLoading: false, userPost: payload };
     case USER_INDUSTRY:
       return { ...state, userIndustryLoading: false, industry: payload };
+    case USER_SALESPITCH:
+      return { ...state, userSalespitchLoading: false, salespitch: payload };
     case USER_SERVICES:
       return { ...state, userIndustryLoading: false, services: payload };
     case USER_BLOG:
