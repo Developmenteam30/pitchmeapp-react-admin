@@ -35,7 +35,7 @@ const ServicesPost = (props) => {
   const ondeleteServices = (post) => {
     swal({
       title: "Are you sure?",
-      text: `Are you sure that you want to delete post ${post.title} ?`,
+      text: `Are you sure that you want to delete post ${post.name} ?`,
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -217,9 +217,9 @@ const ServicesPost = (props) => {
                         className="form-control w-50 input  d-inline  mx-2"
                       >
                         <option>All</option>
-                        <option value={1}>Articles</option>
-                        <option value={2}>Images</option>
-                        <option value={3}>Videos</option>
+                        <option value={"Skill"}>Skill</option>
+                        <option value={"Connection"}>Connection</option>
+                        <option value={"Service"}>Service</option>
                       </select>
                     </div>
                   </Col>
@@ -259,7 +259,7 @@ const ServicesPost = (props) => {
                 <tbody>
                   {services.docs.length
                     ? services.docs.map((obj, indx) => (
-                        <tr key={indx}>
+                        <tr key={indx} style={{display: type && type != obj.type ? 'none' : ''}}>
                           <td>{page * 10 + indx + 1}</td>
                           <td>
                             {obj.type}

@@ -245,7 +245,21 @@ const ServicesEditPost = (props) => {
                       <label>
                         Content<span className="required">*</span>
                       </label>
-                      <ReactQuill
+
+                      <Input
+                        name="content"
+                        placeholder="Enter Content"
+                        value={content}
+                        onChange={(e) => onContentChange(e.target.value)}
+                        modules={modules}
+                        style={{
+                          insetInlineStart: "10",
+                          height: "50px",
+                          width:"510px",
+                          marginBottom: "59px",
+                        }}
+                      />
+                      {/* <ReactQuill
                         name="content"
                         placeholder="Enter Content"
                         value={content}
@@ -256,7 +270,7 @@ const ServicesEditPost = (props) => {
                           height: "250px",
                           marginBottom: "59px",
                         }}
-                      />
+                      /> */}
                       {errors.errorFile && (
                         <span className="invalid-text ">
                           {errors.errorFile}

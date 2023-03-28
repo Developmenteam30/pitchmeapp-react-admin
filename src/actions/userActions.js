@@ -145,6 +145,19 @@ export const addNewSalespitch = (formData) => async (dispatch) => {
   const res = await axios.post(PROXY + "salespitch", formData);
   return res;
 };
+
+export const getSalespitchDetail = (id) => async (dispatch) => {
+  const res = await axios.get(PROXY + "salespitch/detail/" + id);
+  return res;
+};
+
+export const updateUserSalespitch = (id, formData) => async (dispatch) => {
+  const res = await axios.put(PROXY + "salespitch/update/" + id, formData);
+  return res;
+};
+
+
+
 export const getIndustryList = (page, limit, search) => async (dispatch) => {
   const res = await axios.get(
     PROXY +

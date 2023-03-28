@@ -35,13 +35,13 @@ const User = (props) => {
   const ondeleteUserSalespitch = (post) => {
     swal({
       title: "Are you sure?",
-      text: `Are you sure that you want to delete post ${salespitch.title} ?`,
+      text: `Are you sure that you want to delete post ${post.title} ?`,
       icon: "warning",
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        deleteUserSalespitch(salespitch._id)
+        deleteUserSalespitch(post._id)
           .then((result) => {
             toast.success(result.data.message);
             getUserSalespitch(pageLength, pageLimit, "", type);
@@ -216,10 +216,10 @@ console.log(salespitch);
                         onChange={(e) => setType(e.target.value)}
                         className="form-control w-50 input  d-inline  mx-2"
                       >
-                        <option>All</option>
-                        <option value={1}>Articles</option>
-                        <option value={2}>Images</option>
-                        <option value={3}>Videos</option>
+                        <option value={''}>All</option>
+                        <option value={'1'}>Pending</option>
+                        <option value={'2'}>Approved</option>
+                        <option value={'3'}>Rejected</option>
                       </select>
                     </div>
                   </Col>
@@ -242,14 +242,14 @@ console.log(salespitch);
                 <tbody>
                   {salespitch.docs.length
                     ? salespitch.docs.map((obj, indx) => (
-                        <tr key={indx}>
+                        <tr key={indx} style={{display: type && type != '' && obj.status != type ? 'none' : ''}}>
                           <td>{page * 10 + indx + 1}</td>
                           <td>{obj.title}</td>
                           <td>{obj.type}</td>
                           <td>{obj.industry}</td>
                           <td>{obj.location}</td>
                           <td>{obj.description}</td>
-                          <td>{obj.status}</td>
+                          <td>{obj.status == '1' ? 'Pending' : obj.status == '2' ? 'Approved' : 'Rejected'}</td>
                           <td align="right">
                             <Link
                               to={{
