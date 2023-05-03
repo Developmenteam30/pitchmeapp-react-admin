@@ -19,6 +19,7 @@ import { getPostDetail, updateUserPost } from "../../actions/userActions";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Select from 'react-select';
 
 const EditPosts = (props) => {
   const { _id } = useParams();
@@ -33,6 +34,19 @@ const EditPosts = (props) => {
       setContent(res.data.result[0].text);
       setType(res.data.result[0].type);
       setCurrentFile(res.data.result[0].file);
+      if(res.data.result[0].category){
+        console.log(res.data.result[0]);
+        var t = data[0].category.replaceAll('"', '').replaceAll("[", '').replaceAll(" ", '').replaceAll("]", '').split(",");
+        var z = [];
+        t.forEach(e=>{
+          if(e != ''){
+            z.push({ value: e, label: e })
+          }
+        })
+        setcategory(z);
+      }else{
+        setcategory([]);
+      }
     });
   }, []);
 
@@ -52,6 +66,14 @@ const EditPosts = (props) => {
   const [imagePreviewUrl, setUrl] = useState("");
   const [titleErr, setTitleErr] = useState("");
   const [currentFile, setCurrentFile] = useState("");
+  const [category, setcategory] = useState([]);
+  const options = [
+    { value: 'Advice', label: 'Advice' },
+    { value: 'Mistakes', label: 'Mistakes' },
+    { value: 'Strategies', label: 'Strategies' },
+    { value: 'Motivational', label: 'Motivational' },
+    { value: 'Success Stories', label: 'Success Stories' },
+  ]
 
   const [errors, seterrors] = useState({
     errorTitle: "",
@@ -180,7 +202,13 @@ const EditPosts = (props) => {
     } else {
       const formData = new FormData();
       // formData.append("title", title);
+      var t = '[';
+      category.forEach(e=>{
+        t += e.value+',';
+      })
+      t = t+']';
       formData.append("type", type);
+      formData.append("category", t);
 
       if (type == 1) {
         formData.append("text", content);
@@ -268,6 +296,35 @@ const EditPosts = (props) => {
                     </select>
                     {errors.errorType && (
                       <span className="invalid-text ">{errors.errorType}</span>
+                    )}
+                  </Col>
+                </FormGroup>
+                <FormGroup>
+                  <Col xs="6">
+                    <label>
+                      Category<span className="required">*</span> 
+                    </label>
+                    {category.length > 0 ? (
+                      <div>
+                        <Select
+                          defaultValue={category}
+                          isMulti
+                          name="colors"
+                          options={options}
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          onChange={(e)=>{setcategory(e)}}
+                        />
+                      </div>
+                    ) : (
+                      <Select
+                        isMulti
+                        name="colors"
+                        options={options}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        onChange={(e)=>{setcategory(e)}}
+                        />
                     )}
                   </Col>
                 </FormGroup>

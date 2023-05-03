@@ -253,6 +253,7 @@ const User = (props) => {
                     <th>Sr. No.</th>
                     {/* <th>Title</th> */}
                     <th>Type</th>
+                    <th>Category</th>
                     <th style={{ float: "right" }}>Action</th>
                   </tr>
                 </thead>
@@ -268,6 +269,9 @@ const User = (props) => {
                               : obj.type == 2
                               ? "Image"
                               : "Video"}
+                          </td>
+                          <td>
+                            {obj.category}
                           </td>
                           <td align="right">
                             <Link

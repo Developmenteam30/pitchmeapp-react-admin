@@ -736,9 +736,9 @@ const EditSalespitch = (props) => {
                     </Col>
                     <Col xs="6">
                       <label>
-                        Comment
+                        Comment (Maximum 50 character)
                       </label>
-                      <input type={"text"} value={comment} className="form-control" onChange={e=>setcomment(e.target.value)} />
+                      <input type={"text"} value={comment} className="form-control" onChange={e=>{e.target.value.length < 50 ? setcomment(e.target.value) : setcomment(comment)}} />
                     </Col>
 
                     <Col xs="6">

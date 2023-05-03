@@ -18,17 +18,26 @@ import { Link } from "react-router-dom";
 import { addNewPost } from "../../actions/userActions";
 import { connect } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
+import Select from 'react-select';
 
 const AddPosts = (props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [saveLoading, setSaveLoading] = useState(false);
   const [type, setType] = useState("");
+  const [category, setcategory] = useState([]);
   const [dropzone, setDropZone] = useState([]);
   const [fileName, setFileName] = useState("");
   const [imagePreview, setPreview] = useState("");
   const [imagePreviewUrl, setUrl] = useState("");
   const [titleErr, setTitleErr] = useState("");
+  const options = [
+    { value: 'Advice', label: 'Advice' },
+    { value: 'Mistakes', label: 'Mistakes' },
+    { value: 'Strategies', label: 'Strategies' },
+    { value: 'Motivational', label: 'Motivational' },
+    { value: 'Success Stories', label: 'Success Stories' },
+  ]
 
   const [errors, seterrors] = useState({
     errorTitle: "",
@@ -155,9 +164,14 @@ const AddPosts = (props) => {
       }
     } else {
       const formData = new FormData();
+      var t = '[';
+      category.forEach(e=>{
+        t += e.value+',';
+      })
+      t = t+']';
       // formData.append("title", title);
       formData.append("type", type);
-
+      formData.append("category", t);
       if (type == 1) {
         formData.append("text", content);
       } else {
@@ -247,6 +261,36 @@ const AddPosts = (props) => {
                     )}
                   </Col>
                 </FormGroup>
+                <FormGroup>
+                  <Col xs="6">
+                    <label>
+                      Category<span className="required">*</span> 
+                    </label>
+                    {category.length > 0 ? (
+                      <div>
+                        <Select
+                          defaultValue={category}
+                          isMulti
+                          name="colors"
+                          options={options}
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          onChange={(e)=>{setcategory(e)}}
+                        />
+                      </div>
+                    ) : (
+                      <Select
+                        isMulti
+                        name="colors"
+                        options={options}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        onChange={(e)=>{setcategory(e)}}
+                        />
+                    )}
+                  </Col>
+                </FormGroup>
+
                 {type == 1 && (
                   <FormGroup row>
                     <Col xs="12">
