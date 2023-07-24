@@ -10,9 +10,22 @@ import {
   GET_ALL_USERS,
   USER_SERVICES,
   USER_SALESPITCH,
+  USER_BIOGRAPHY,
 } from "../actions/types";
 const initialState = {
   salespitch: {
+    docs: [],
+    totalDocs: 0,
+    limit: 0,
+    page: 0,
+    totalPages: 0,
+    pagingCounter: 0,
+    hasPrevPage: false,
+    hasNextPage: false,
+    prevPage: null,
+    nextPage: null,
+  },
+  biography: {
     docs: [],
     totalDocs: 0,
     limit: 0,
@@ -158,6 +171,8 @@ const userDetailReducers = (state = initialState, action) => {
       return { ...state, userIndustryLoading: false, industry: payload };
     case USER_SALESPITCH:
       return { ...state, userSalespitchLoading: false, salespitch: payload };
+    case USER_BIOGRAPHY:
+      return { ...state, userBiographyLoading: false, biography: payload };
     case USER_SERVICES:
       return { ...state, userIndustryLoading: false, services: payload };
     case USER_BLOG:

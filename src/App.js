@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import setAuthToken from "./Helpers/setAuthToken";
 import { loadUser } from "./actions/authActions";
 import { deleteAllAlert } from "./actions/alertAction";
+import { io } from "socket.io-client";
 
 // import "../public/css/style2.css";
 const loading = () => (
@@ -27,6 +28,10 @@ const Page500 = React.lazy(() => import("./views/Pages/Page500"));
 if (localStorage.tokenAdmin) {
   setAuthToken(localStorage.tokenAdmin);
 }
+global.raghu = "raghu";
+global.socket = io(process.env.REACT_APP_URL, {
+  reconnectionDelayMax: 10000,transports : ['websocket']
+});
 
 class App extends Component {
   componentWillMount() {

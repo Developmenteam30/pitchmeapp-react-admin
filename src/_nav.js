@@ -28,6 +28,18 @@ export default {
       
     },
     {
+      name: "Biography",
+      url: "/Biography",
+      icon: "fa fa-users",
+      
+    },
+    {
+      name: "Support",
+      url: "/Support",
+      icon: "fa fa-support",
+      
+    },
+    {
       name: "Settings",
       url: "/settings",
       icon: "icon-settings",

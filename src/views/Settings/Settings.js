@@ -23,6 +23,10 @@ const Settings = (props) => {
   const settingsData = props.settings;
 
   const [state, setstate] = useState({
+    no_of_businessideas: "",
+    businessideas_daily_increase: "",
+    no_of_facilitator: "",
+    facilitator_daily_increase: "",
     no_of_investor: "",
     how_much_investor: "",
     businesses: "",
@@ -39,6 +43,10 @@ const Settings = (props) => {
   });
 
   const [errors, seterrors] = useState({
+    error_no_of_businessideas: "",
+    error_businessideas_daily_increase: "",
+    error_no_of_facilitator: "",
+    error_facilitator_daily_increase: "",
     error_investor: "",
     error_how_much_investor: "",
     error_businesses: "",
@@ -58,6 +66,10 @@ const Settings = (props) => {
     props.getSetting().then((res) => {
       setstate({
         ...state,
+        no_of_businessideas: res.businessideas.number,
+        businessideas_daily_increase: res.businessideas.daily_increase,
+        no_of_facilitator: res.facilitator.number,
+        facilitator_daily_increase: res.facilitator.daily_increase,
         no_of_investor: res.investors.number,
         how_much_investor: res.investors.daily_increase,
         businesses: res.business.number,
@@ -99,6 +111,10 @@ const Settings = (props) => {
     let validationFlag = true;
 
     const {
+      no_of_businessideas,
+      businessideas_daily_increase,
+      no_of_facilitator,
+      facilitator_daily_increase,
       no_of_investor,
       how_much_investor,
       businesses,
@@ -116,6 +132,11 @@ const Settings = (props) => {
 
     e.preventDefault();
 
+    let errorno_of_businessideas= "";
+    let errorbusinessideas_daily_increase= "";
+    let errorno_of_facilitator= "";
+    let errorfacilitator_daily_increase= "";
+
     let errInvestors = "";
     let errHowMuchInvestors = "";
     let errBusinesses = "";
@@ -129,6 +150,32 @@ const Settings = (props) => {
     let errCountires = "";
     let errHowMuchCountries = "";
     let errContinents = "";
+
+    errorno_of_businessideas = checkRequiredValidationWithMinMaxNumber(
+      no_of_businessideas,
+      "No of Business Idea",
+      1,
+      99999999
+    );
+    errorbusinessideas_daily_increase = checkRequiredValidationWithMinMaxNumber(
+      businessideas_daily_increase,
+      "How much to increase daily",
+      1,
+      99999999
+    );
+    errorno_of_facilitator = checkRequiredValidationWithMinMaxNumber(
+      no_of_facilitator,
+      "No of Facilitator",
+      1,
+      99999999
+    );
+    errorfacilitator_daily_increase = checkRequiredValidationWithMinMaxNumber(
+      facilitator_daily_increase,
+      "How much to increase daily",
+      1,
+      99999999
+    );
+
 
     errInvestors = checkRequiredValidationWithMinMaxNumber(
       no_of_investor,
@@ -222,6 +269,11 @@ const Settings = (props) => {
     );
 
     if (
+      errorno_of_businessideas ||
+      errorbusinessideas_daily_increase ||
+      errorno_of_facilitator ||
+      errorfacilitator_daily_increase ||
+  
       errInvestors ||
       errHowMuchInvestors ||
       errBusinesses ||
@@ -239,6 +291,11 @@ const Settings = (props) => {
       validationFlag = false;
 
       seterrors({
+        error_no_of_businessideas:     errorno_of_businessideas,
+        error_businessideas_daily_increase:     errorbusinessideas_daily_increase,
+        error_no_of_facilitator:     errorno_of_facilitator,
+        error_facilitator_daily_increase:     errorfacilitator_daily_increase,
+    
         error_investor: errInvestors,
         error_how_much_investor: errHowMuchInvestors,
         error_businesses: errBusinesses,
@@ -255,6 +312,10 @@ const Settings = (props) => {
       });
     } else {
       seterrors({
+        error_no_of_businessideas: "",
+        error_businessideas_daily_increase: "",
+        error_no_of_facilitator: "",
+        error_facilitator_daily_increase: "",
         error_investor: "",
         error_how_much_investor: "",
         error_businesses: "",
@@ -273,6 +334,11 @@ const Settings = (props) => {
 
     if (validationFlag) {
       const submitData = {
+        no_of_businessideas: parseFloat(no_of_businessideas),
+        businessideas_daily_increase: parseFloat(businessideas_daily_increase),
+        no_of_facilitator: parseFloat(no_of_facilitator),
+        facilitator_daily_increase: parseFloat(facilitator_daily_increase),
+    
         no_of_investors: parseFloat(no_of_investor),
         investors_daily_increase: parseFloat(how_much_investor),
         no_of_business: parseFloat(businesses),
@@ -313,6 +379,130 @@ const Settings = (props) => {
                 <Col xs="12">
                   <strong>Investors</strong>
                   <hr className="mt-0" />
+                  <Row>
+                    <Col>
+                      <div className="form-group">
+                        <label>No of Business Ideas</label>
+                        <span className="required">*</span>
+                        <input
+                          type="number"
+                          min="1"
+                          name="no_of_businessideas"
+                          placeholder="No of Business Ideas"
+                          onChange={(e) => handleInputChange(e)}
+                          style={{ height: "auto" }}
+                          value={state.no_of_businessideas}
+                          className={classnames(
+                            "form-control input",
+                            {
+                              invalid: errors.error_no_of_businessideas.length > 0,
+                            },
+                            {
+                              valid: errors.error_no_of_businessideas.length === 0,
+                            }
+                          )}
+                        />
+                        {errors.error_no_of_businessideas && (
+                          <span className="invalid-text ">
+                            {errors.error_no_of_businessideas}
+                          </span>
+                        )}
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <div className="form-group">
+                        <label>How much to increase daily?</label>
+                        <span className="required">*</span>
+                        <input
+                          type="number"
+                          min="1"
+                          name="businessideas_daily_increase"
+                          placeholder="How much to increase daily?"
+                          onChange={(e) => handleInputChange(e)}
+                          style={{ height: "auto" }}
+                          value={state.businessideas_daily_increase}
+                          className={classnames(
+                            "form-control input",
+                            {
+                              invalid: errors.error_businessideas_daily_increase.length > 0,
+                            },
+                            {
+                              valid: errors.error_businessideas_daily_increase.length === 0,
+                            }
+                          )}
+                        />
+                        {errors.error_businessideas_daily_increase && (
+                          <span className="invalid-text ">
+                            {errors.error_businessideas_daily_increase}
+                          </span>
+                        )}
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <div className="form-group">
+                        <label>No of Facilitator</label>
+                        <span className="required">*</span>
+                        <input
+                          type="number"
+                          min="1"
+                          name="no_of_facilitator"
+                          placeholder="No of Facilitator"
+                          onChange={(e) => handleInputChange(e)}
+                          style={{ height: "auto" }}
+                          value={state.no_of_facilitator}
+                          className={classnames(
+                            "form-control input",
+                            {
+                              invalid: errors.error_no_of_facilitator.length > 0,
+                            },
+                            {
+                              valid: errors.error_no_of_facilitator.length === 0,
+                            }
+                          )}
+                        />
+                        {errors.error_no_of_facilitator && (
+                          <span className="invalid-text ">
+                            {errors.error_no_of_facilitator}
+                          </span>
+                        )}
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <div className="form-group">
+                        <label>How much to increase daily?</label>
+                        <span className="required">*</span>
+                        <input
+                          type="number"
+                          min="1"
+                          name="facilitator_daily_increase"
+                          placeholder="How much to increase daily?"
+                          onChange={(e) => handleInputChange(e)}
+                          style={{ height: "auto" }}
+                          value={state.facilitator_daily_increase}
+                          className={classnames(
+                            "form-control input",
+                            {
+                              invalid: errors.error_facilitator_daily_increase.length > 0,
+                            },
+                            {
+                              valid: errors.error_facilitator_daily_increase.length === 0,
+                            }
+                          )}
+                        />
+                        {errors.error_facilitator_daily_increase && (
+                          <span className="invalid-text ">
+                            {errors.error_facilitator_daily_increase}
+                          </span>
+                        )}
+                      </div>
+                    </Col>
+                  </Row>
                   <Row>
                     <Col>
                       <div className="form-group">

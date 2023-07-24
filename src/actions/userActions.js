@@ -10,7 +10,8 @@ import {
   USER_OWNED_VEHICALS,
   GET_ALL_USERS,
   USER_SERVICES,
-  USER_SALESPITCH
+  USER_SALESPITCH,
+  USER_BIOGRAPHY
 } from "./types";
 const PROXY = process.env.REACT_APP_URL + "api/";
 
@@ -135,6 +136,20 @@ export const getUserSalespitch = (page, limit, search) => async (dispatch) => {
     payload: res.data.result,
   });
 };
+export const getUserBiography = (page, limit, search) => async (dispatch) => {
+  // console.log('testbhai')
+  const res = await axios.get(
+    PROXY +
+      "biography?&page=" +
+      page +
+      "&limit=" +
+      limit
+  );
+  dispatch({
+    type: USER_BIOGRAPHY,
+    payload: res.data.result,
+  });
+};
 
 export const deleteUserSalespitch = (id) => async (dispatch) => {
   const res = await axios.delete(PROXY + "user/salespitch/" + id);
@@ -153,6 +168,26 @@ export const getSalespitchDetail = (id) => async (dispatch) => {
 
 export const updateUserSalespitch = (id, formData) => async (dispatch) => {
   const res = await axios.put(PROXY + "salespitch/update/" + id, formData);
+  return res;
+};
+
+export const deleteUserBiography = (id) => async (dispatch) => {
+  const res = await axios.delete(PROXY + "user/biography/" + id);
+  return res;
+};
+
+export const addNewBiography = (formData) => async (dispatch) => {
+  const res = await axios.post(PROXY + "biography", formData);
+  return res;
+};
+
+export const getBiographyDetail = (id) => async (dispatch) => {
+  const res = await axios.get(PROXY + "biography/detail/" + id);
+  return res;
+};
+
+export const updateUserBiography = (id, formData) => async (dispatch) => {
+  const res = await axios.put(PROXY + "biography/update/" + id, formData);
   return res;
 };
 

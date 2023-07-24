@@ -11,6 +11,9 @@ import Industry from "./views/Industry/IndustryPost";
 import Services from "./views/Services/ServicesPost"
 import Salespitch from "./views/Salespitch/Salespitch";
 import EditSalespitch from "./views/Salespitch/EditSalespitch";
+import Biography from "./views/Biography/Biography";
+import Support from "./views/Support/Support";
+import EditBiography from "./views/Biography/EditBiography";
 const IndustryPost = React.lazy(() => import("./views/Industry/IndustryPost"));
 const IndustryAddPost = React.lazy(() => import("./views/Industry/IndustryAddPost"));
 const IndustryEditPost = React.lazy(() => import("./views/Industry/IndustryEditPost"));
@@ -39,6 +42,12 @@ const routes = [
     exact: true,
     name: "Change Password",
     component: ChangePassword,
+  },
+  {
+    path: "/support",
+    exact:true,
+    name: "Support",
+    component: Support,
   },
   {
     path: "/update-profile",
@@ -231,6 +240,18 @@ const routes = [
     exact: true,
     name: "Salespitch",
     component: Salespitch,
+  },
+  {
+    path: "/biography/edit/:_id",
+    exact: true,
+    name: "Edit biography pitch",
+    component: EditBiography,
+  },
+  {
+    path: "/biography",
+    exact: true,
+    name: "Biography",
+    component: Biography,
   },
 ];
 

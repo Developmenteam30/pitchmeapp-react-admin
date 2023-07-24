@@ -476,3 +476,14 @@ button.dropdown-item:hover li i::after {
 .app-header .navbar-brand {
   width: 205px !important;
 }
+.upload-image{
+  text-align: center;
+  border: 0.5px dashed;
+  background-color: #e7e9e4;
+  cursor: pointer;
+}
+.img-upload{
+  width: 100px !important;
+  height: 100px !important;
+  object-fit: contain;
+}

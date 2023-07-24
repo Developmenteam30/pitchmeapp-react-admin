@@ -17,22 +17,23 @@ import {
   Table,
 } from "reactstrap";
 import swal from "sweetalert";
-import { addNewPost, getUserSalespitch, deleteUserSalespitch } from "../../actions/userActions";
+import { addNewPost, getUserBiography, deleteUserBiography } from "../../actions/userActions";
 import img from "../../assets/img/8.jpg";
 import vid from "../../assets/img/XRecorder_31032022_110516.mp4";
 
-const User = (props) => {
-  const { getUserSalespitch, posts, deleteUserSalespitch } = props;
+const Biography = (props) => {
+  const { getUserBiography, posts, deleteUserBiography } = props;
   const [search, setSearch] = useState("");
   const [pageLimit, setPageLimit] = useState(10);
   const [pageLength, setPageLength] = useState(1);
   const [type, setType] = useState("");
 
   useEffect(() => {
-    getUserSalespitch(pageLength, pageLimit, "", type);
-  }, [pageLength, pageLimit, getUserSalespitch, type]);
+    getUserBiography(pageLength, pageLimit, "", type);
 
-  const ondeleteUserSalespitch = (post) => {
+  }, [pageLength, pageLimit, getUserBiography, type]);
+
+  const ondeleteUserBiography = (post) => {
     swal({
       title: "Are you sure?",
       text: `Are you sure that you want to delete post ${post.title} ?`,
@@ -41,10 +42,10 @@ const User = (props) => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        deleteUserSalespitch(post._id)
+        deleteUserBiography(post._id)
           .then((result) => {
             toast.success(result.data.message);
-            getUserSalespitch(pageLength, pageLimit, "", type);
+            getUserBiography(pageLength, pageLimit, "", type);
           })
           .catch((err) => {
             if (err.response !== undefined) {
@@ -58,18 +59,18 @@ const User = (props) => {
   const onFieldKeyPress = (e) => {
     if (e.target.name === "search") {
       if (e.key === "Enter") {
-        getUserSalespitch(pageLength, pageLimit, e.target.value, type);
+        getUserBiography(pageLength, pageLimit, e.target.value, type);
       }
     }
   };
 
   const onPageClick = (page) => {
-    getUserSalespitch(page, pageLimit, "", type);
+    getUserBiography(page, pageLimit, "", type);
   };
 
   const handleClearSearch = () => {
     setSearch("");
-    getUserSalespitch(pageLength, pageLimit, "", type);
+    getUserBiography(pageLength, pageLimit, "", type);
   };
 
   const paginationSection = (data) => {
@@ -146,10 +147,16 @@ const User = (props) => {
     );
   };
 
-  const { salespitch, userDetailLoading } = posts;
-  let { page } = salespitch;
+  const { biography, userDetailLoading } = posts;
+  console.log(posts);
+  if(Biography){
+    var { page } = biography;
+  }else{
+    var page = 1;
+  }
+
   page = page - 1;
-console.log(salespitch);
+  console.log(biography);
   const containerStyle = {
     zIndex: 1999,
   };
@@ -166,7 +173,7 @@ console.log(salespitch);
           <Card className="card-style shadow">
             <CardHeader>
               <i className="fas fa-images"></i>
-              <strong>Sales Pitch</strong>
+              <strong>Biography</strong>
             </CardHeader>
             <CardBody>
               <Col md="12">
@@ -230,30 +237,28 @@ console.log(salespitch);
                 <thead>
                   <tr className="postsRow">
                     <th>Sr. No.</th>
-                    <th>Title</th>
-                    <th>Type</th>
-                    <th>Industry</th>
-                    <th>Location</th>
-                    <th>Description</th>
-                    <th>Status</th>
+                    <th>Username</th>
+                    <th>Profile Picture Status</th>
+                    <th>ID Status</th>
+                    <th>Skill Certificate Status</th>
+                    <th>Proof Funds Status</th>
                     <th style={{ float: "right" }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {salespitch.docs.length
-                    ? salespitch.docs.map((obj, indx) => (
+                  {biography && biography.docs.length
+                    ? biography.docs.map((obj, indx) => (
                         <tr key={indx} style={{display: type && type != '' && obj.status != type ? 'none' : ''}}>
                           <td>{page * 10 + indx + 1}</td>
-                          <td>{obj.title}</td>
-                          <td>{obj.type}</td>
-                          <td>{obj.industry}</td>
-                          <td>{obj.location}</td>
-                          <td>{obj.description}</td>
-                          <td>{obj.status == '1' ? 'Pending' : obj.status == '2' ? 'Approved' : 'Rejected'}</td>
+                          <td>{obj.user ? obj.user.username : ''}</td>
+                          <td>{obj.status == '1' ? 'Pending' : obj.status == '2' ? 'Verified' : 'Not Verified'}</td>
+                          <td>{obj.Identitystatus == '1' ? 'Pending' : obj.Identitystatus == '2' ? 'Verified' : 'Not Verified'}</td>
+                          <td>{obj.SkillCertificatestatus == '1' ? 'Pending' : obj.SkillCertificatestatus == '2' ? 'Verified' : 'Not Verified'}</td>
+                          <td>{obj.ProofFundsstatus == '1' ? 'Pending' : obj.ProofFundsstatus == '2' ? 'Verified' : 'Not Verified'}</td>
                           <td align="right">
                             <Link
                               to={{
-                                pathname: `/salespitch/edit/${obj._id}`,
+                                pathname: `/Biography/edit/${obj._id}`,
                                 state: { obj },
                               }}
                             >
@@ -273,7 +278,6 @@ console.log(salespitch);
                                 </Button>
                               </Tooltip>
                             </Link>
-                            {obj._id =='6448e9494ff8f4cb69599465' ? null : (
                             <Tooltip
                               title="Delete Post"
                               position="bottom"
@@ -284,13 +288,12 @@ console.log(salespitch);
                               <Button
                                 size="md"
                                 className="ml-2 btn-danger"
-                                onClick={() => ondeleteUserSalespitch(obj)}
+                                onClick={() => ondeleteUserBiography(obj)}
                                 type="button"
                               >
                                 <i className="fa fa-trash-o" aria-hidden="true"></i>
                               </Button>
                             </Tooltip>
-                            )}
                           </td>
                         </tr>
                       ))
@@ -301,12 +304,12 @@ console.log(salespitch);
                 </tbody>
 
               </Table>
-              {!salespitch.docs.length && (
+              {!biography || !biography.docs.length && (
                 <center style={{ fontSize: 20 }}>No record found</center>
               )}
 
               <div className="row float-right">
-                <div className="col-md-12 ">{paginationSection(salespitch)}</div>
+                <div className="col-md-12 ">{biography ? paginationSection(biography) : null}</div>
               </div>
             </CardBody>
           </Card>
@@ -321,6 +324,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  getUserSalespitch,
-  deleteUserSalespitch,
-})(User);
+  getUserBiography,
+  deleteUserBiography,
+})(Biography);
