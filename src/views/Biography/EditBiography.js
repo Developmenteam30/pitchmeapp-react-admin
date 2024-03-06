@@ -30,6 +30,16 @@ const EditBiography = (props) => {
     props.getBiographyDetail(_id).then((res) => {
       console.log(res?.data);
       const data = res?.data?.result;
+      setLocation(data[0].Location);
+      setSkills(data[0].Skills);
+      setEducation(data[0].Education);
+      setExperience(data[0].Experience);
+      setWealth(data[0].Wealth);
+      setAdd(data[0].Add);
+      settextstatus(data[0].textstatus);
+      setnda(data[0].nda);
+
+
       setPostData(data[0]);
       setuserid(data[0].userid);
       setPicture(data[0].Picture)
@@ -47,6 +57,14 @@ const EditBiography = (props) => {
     });
   }, []);
 
+  const [Location, setLocation] = useState('');
+  const [Skills, setSkills] = useState('');
+  const [Education, setEducation] = useState('');
+  const [Experience, setExperience] = useState('');
+  const [Wealth, setWealth] = useState('');
+  const [Add, setAdd] = useState('');
+  const [textstatus, settextstatus] = useState('1');
+  const [nda, setnda] = useState('');
   const [userid, setuserid] = useState(null);
   const [Picture, setPicture] = useState(null);
   const [Face, setFace] = useState(null);
@@ -331,7 +349,15 @@ const EditBiography = (props) => {
       formData.append("SkillCertificatestatus", SkillCertificatestatus);
       formData.append("ProofFundsstatus", ProofFundsstatus);
       formData.append("Signaturestatus", Signaturestatus);
-    
+
+      formData.append("Location", Location);
+      formData.append("Skills", Skills);
+      formData.append("Education", Education);
+      formData.append("Experience", Experience);
+      formData.append("Wealth", Wealth);
+      formData.append("Add", Add);
+      formData.append("textstatus", textstatus);
+
       props
         .updateUserBiography(_id, formData)
         .then((res) => {
@@ -353,6 +379,7 @@ const EditBiography = (props) => {
   const handleSelect = function(selectedItems) {
   }
   const isImage = /PNG|png|JPEG|tmp|jpeg|jpg/;
+  const isPDF = /PDF|pdf/;
 
   return (
     <>
@@ -381,6 +408,7 @@ const EditBiography = (props) => {
                       )}
                     </Col>
                   </FormGroup>
+
                   <Card style={{padding: 10}}>
                   <FormGroup row>
                     <Col xs="12">
@@ -573,7 +601,7 @@ const EditBiography = (props) => {
                     <Col xs="12">
                       <h5>Proof Funds</h5>
                       <label className="mt-1">
-                          Note: Only jpeg, jpg, png and GIF file format only,
+                          Note: Only PDF file format only,
                           Maximum 10MB file size allowed
                       </label>
                     </Col>
@@ -585,12 +613,20 @@ const EditBiography = (props) => {
                         style={{ height: "auto" }}
                         className={classnames("form-control-file")}
                       />
-                      {imagePreview4 && (
+                      {/* {imagePreview4 && (
                         <img src={imagePreview4} className="showProfile" />
-                      )}{" "}
+                      )}{" "} */}
+                      <br />
                       {isImage.test(ProofFunds) && (
                         <a href={ProofFunds} target='_blank'>
-                        <img src={ProofFunds} className="showProfile" />
+                          <img src={ProofFunds} className="showProfile" />
+                        </a>
+                      )}
+                      {isPDF.test(ProofFunds) && (
+                        <a href={ProofFunds} target='_blank'>
+                          <button class="btn btn-info">
+                            download file
+                          </button>
                         </a>
                       )}
                       {errors.errorFile4 && (
@@ -697,7 +733,129 @@ const EditBiography = (props) => {
                     </Col>
 
                   </FormGroup>
+                  <Card style={{padding: 10}}>
+                  <FormGroup row>
+                    <Col xs="12">
+                      <h5>Bio details</h5>
+                    </Col>
+                    <Col xs="6">
+                    <p>NDA</p>
+                      <Input
+                        name="NDA"
+                        placeholder="Enter NDA"
+                        value={nda == "Accept" ? "Accepted" : "Not Accepted"}
+                        onChange={(e) => setnda(e.target.value)}
+                        readOnly={true}
+                        style={{
+                          insetInlineStart: "10",
+                          height: "50px",
+                          marginBottom: "10px",
+                        }}
+                      />
+                      <p>Location</p>
+                      <Input
+                        name="Location"
+                        placeholder="Enter Location"
+                        value={Location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        style={{
+                          insetInlineStart: "10",
+                          height: "50px",
+                          marginBottom: "10px",
+                        }}
+                      />
+                      <p>Skills</p>
+                    <Input
+                        name="Skills"
+                        placeholder="Enter Skills"
+                        value={Skills}
+                        onChange={(e) => setSkills(e.target.value)}
+                        style={{
+                          insetInlineStart: "10",
+                          height: "50px",
+                          marginBottom: "10px",
+                        }}
+                      />
+                      <p>Education</p>
+                    <Input
+                        name="Education"
+                        placeholder="Enter Education"
+                        value={Education}
+                        onChange={(e) => setEducation(e.target.value)}
+                        style={{
+                          insetInlineStart: "10",
+                          height: "50px",
+                          marginBottom: "10px",
+                        }}
+                      />
+                      <p>Experience</p>
+                    <Input
+                        name="Experience"
+                        placeholder="Enter Experience"
+                        value={Experience}
+                        onChange={(e) => setExperience(e.target.value)}
+                        style={{
+                          insetInlineStart: "10",
+                          height: "50px",
+                          marginBottom: "10px",
+                        }}
+                      />
+                      <p>Wealth</p>
+                    <Input
+                        name="Wealth"
+                        placeholder="Enter Wealth"
+                        value={Wealth}
+                        onChange={(e) => setWealth(e.target.value)}
+                        style={{
+                          insetInlineStart: "10",
+                          height: "50px",
+                          marginBottom: "10px",
+                        }}
+                      />
+                      <p>Add</p>
+                    <Input
+                        name="Add"
+                        placeholder="Enter Add"
+                        value={Add}
+                        onChange={(e) => setAdd(e.target.value)}
+                        style={{
+                          insetInlineStart: "10",
+                          height: "50px",
+                          marginBottom: "10px",
+                        }}
+                      />
+
+                    </Col>
+                    <Col xs="6">
+                      <Card style={{padding: 10}}>
+                        <label>
+                          Status<span className="required">*</span>
+                        </label>
+                        <select
+                          type="text"
+                          name="pageLength"
+                          value={textstatus}
+                          onChange={(e) => {
+                            seterrors({
+                              errorFile: "",
+                            });
+                            settextstatus(e.target.value);
+                          }}
+                          className="form-control"
+                        >
+                          <option value={1}>Pending</option>
+                          <option value={2}>Verified</option>
+                          <option value={3}>Not Verified</option>
+                        </select>
+                        {errors.errorType && (
+                          <span className="invalid-text ">{errors.errorType}</span>
+                        )}
+                      </Card>
+                    </Col>
+                  </FormGroup>
+                  </Card>
                 <Row>
+
                   <div className="w-100 float-left mt-3 ml-3">
                     <LaddaButton
                       className="btn btnColor px-4 btn-ladda"

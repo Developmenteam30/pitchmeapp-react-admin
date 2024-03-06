@@ -51,6 +51,9 @@ const Suuport = (props) => {
     if(data.message.length > 0 && chating && chating.chat && data.roomid == chating.chat._id){
       var m = messagesall;
       data.message.forEach(e=>{
+        e.image = e.image.replace('ciu.ody.mybluehostin.me', 'curveinfotech.com');
+        e.video = e.video.replace('ciu.ody.mybluehostin.me', 'curveinfotech.com');
+        e.voice = e.voice.replace('ciu.ody.mybluehostin.me', 'curveinfotech.com');
         m.push(e);
       })
       messagesall = m;
@@ -173,7 +176,7 @@ const Suuport = (props) => {
               </Col>
               <ul className="list-group">
               {chatlist && chatlist.length
-                    ? chatlist.map((obj, indx) => (
+                    ? chatlist.map((obj, indx) => obj.user && (
                 <li onClick={()=>{ joinchat(obj)}} key={indx} class="list-group-item d-flex justify-content-between align-items-center">
                   <Avatar src={"https://ui-avatars.com/api/?name="+(obj.user ? obj.user.username : '')} />
                   {obj.user ? obj.user.username : ''}

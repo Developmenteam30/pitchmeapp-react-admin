@@ -30,30 +30,37 @@ const EditSalespitch = (props) => {
     props.getSalespitchDetail(_id).then((res) => {
       console.log(res?.data);
       const data = res?.data?.result;
-      setPostData(data[0]);
-      settitle(data[0].title);
-      setimg1(data[0].img1);
-      setimg2(data[0].img2);
-      setimg3(data[0].img3);
-      setimg4(data[0].img4);
-      setvid1(data[0].vid1);
-      setfile(data[0].file);
-      var t = data[0].type.replaceAll('"', '').replaceAll("[", '').replaceAll(" ", '').replaceAll("]", '').split(",");
-      var z = [];
-      t.forEach(e=>{
-        if(e != ''){
-          z.push({ value: e, label: e })
-        }
-      })
-      setType(z);
-      setindustry(data[0].industry);
-      setlocation(data[0].location);
-      setvalueamount(data[0].valueamount);
-      setservices(data[0].services);
-      setservicesDetail(data[0].servicesDetail);
-      setdescription(data[0].description);
-      setcomment(data[0].comment);
-      setstatus(data[0].status);
+      if(data.length > 0){
+        setPostData(data[0]);
+        settitle(data[0].title);
+        setimg1(data[0].img1);
+        setimg2(data[0].img2);
+        setimg3(data[0].img3);
+        setimg4(data[0].img4);
+        setvid1(data[0].vid1);
+        setfile(data[0].file);
+        var t = data[0].type.replaceAll('"', '').replaceAll("[", '').replaceAll(" ", '').replaceAll("]", '').split(",");
+        var z = [];
+        t.forEach(e=>{
+          if(e != ''){
+            if(e == 'ServiceProvider'){
+              e = 'Service Provider';
+            }
+            z.push({ value: e, label: e })
+          }
+        })
+        setType(z);
+        setfundingPhase(data[0].fundingPhase);
+        setindustry(data[0].industry);
+        setlocation(data[0].location);
+        setvalueamount(data[0].valueamount);
+        setservices(data[0].services);
+        setservicesDetail(data[0].servicesDetail);
+        setdescription(data[0].description);
+        setcomment(data[0].comment);
+        setstatus(data[0].status);
+      }
+
     });
   }, []);
 
@@ -73,7 +80,7 @@ const EditSalespitch = (props) => {
   const [description, setdescription] = useState(null); 
   const [comment, setcomment] = useState(null); 
   const [status, setstatus] = useState(null);
-
+  const [fundingPhase, setfundingPhase] = useState(null);
 
   const [dropzone, setDropZone] = useState([]);
 
@@ -319,8 +326,14 @@ const EditSalespitch = (props) => {
       const formData = new FormData();
       // formData.append("title", title);
       var t = '[';
+      var is = 1;
       type.forEach(e=>{
-        t += e.value+',';
+        if(is < type.length){
+          t += e.value+', ';
+        }else{
+          t += e.value;
+        }
+        is++;
       })
       t = t+']';
       // alert(t);
@@ -380,7 +393,7 @@ const EditSalespitch = (props) => {
   };
   const options = [
     { value: 'Investor', label: 'Investor' },
-    { value: 'Facilitator', label: 'Facilitator' },
+    { value: 'Service Provider', label: 'Service Provider' },
   ]
   const containerStyle = {
     zIndex: 1999,
@@ -457,6 +470,13 @@ const EditSalespitch = (props) => {
                       <input type={"text"} value={valueamount} className="form-control" onChange={e=>setvalueamount(e.target.value)} />
                     </Col>
                   )}
+                  
+                  <Col xs="6">
+                      <label>
+                      Funding Phase<span className="required">*</span>
+                      </label>
+                      <input type={"text"} value={fundingPhase} className="form-control" onChange={e=>setfundingPhase(e.target.value)} />
+                    </Col>
                   <Col xs="6">
                     <label>
                       Services<span className="required">*</span>
@@ -714,8 +734,11 @@ const EditSalespitch = (props) => {
                           src={imagePreview6}
                         />
                       )}
-                      {(vid1 && vid1 != "") ? (vid1.includes("mp4") ||
-                        vid1.includes("mov")) ? (
+                      {/* {'Url: '+vid1} */}
+                      {(vid1 && vid1 != "") ? 
+                        // (vid1.includes("mp4") ||
+                        // vid1.includes("mov")) ? 
+                        (
                         <video
                           src={vid1}
                           height={150}
@@ -723,7 +746,9 @@ const EditSalespitch = (props) => {
                           className="mt-2"
                           controls
                         />
-                      ): null : null}
+                      )
+                      // : null 
+                      : null}
 
                       {errors.errorFile6 && (
                         <div>
@@ -760,6 +785,7 @@ const EditSalespitch = (props) => {
                         <option value={1}>Pending</option>
                         <option value={2}>Approved</option>
                         <option value={3}>Rejected</option>
+                        <option value={5}>Expired</option>
                       </select>
                       {errors.errorType && (
                         <span className="invalid-text ">{errors.errorType}</span>

@@ -22,6 +22,7 @@ import Select from 'react-select';
 
 const AddPosts = (props) => {
   const [title, setTitle] = useState("");
+  const [tags, settags] = useState("");
   const [content, setContent] = useState("");
   const [saveLoading, setSaveLoading] = useState(false);
   const [type, setType] = useState("");
@@ -37,6 +38,7 @@ const AddPosts = (props) => {
     { value: 'Strategies', label: 'Strategies' },
     { value: 'Motivational', label: 'Motivational' },
     { value: 'Success Stories', label: 'Success Stories' },
+    { value: 'Ads', label: 'Ads' },
   ]
 
   const [errors, seterrors] = useState({
@@ -47,6 +49,10 @@ const AddPosts = (props) => {
 
   const onContentChange = (val) => {
     setContent(val);
+  };
+
+  const ontagsChange = (val) => {
+    settags(val);
   };
 
   const addFilesToDropzone = (files) => {
@@ -113,6 +119,14 @@ const AddPosts = (props) => {
     }
   };
 
+  const modulesTags = {
+    toolbar: [
+      ["bold", "italic", "underline"], // toggled buttons
+      ["blockquote", "link"],
+      ["clean"], // remove formatting button
+    ],
+  };
+
   const modules = {
     toolbar: [
       ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -170,6 +184,7 @@ const AddPosts = (props) => {
       })
       t = t+']';
       // formData.append("title", title);
+      formData.append("tags", tags);
       formData.append("type", type);
       formData.append("category", t);
       if (type == 1) {
@@ -288,6 +303,25 @@ const AddPosts = (props) => {
                         onChange={(e)=>{setcategory(e)}}
                         />
                     )}
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col xs="12">
+                    <label>
+                      Tags
+                    </label>
+                    <ReactQuill
+                      name="tags"
+                      placeholder="Enter Tags"
+                      value={tags}
+                      onChange={(e) => ontagsChange(e)}
+                      modules={modulesTags}
+                      style={{
+                        insetInlineStart: "10",
+                        height: "250px",
+                        marginBottom: "59px",
+                      }}
+                    />
                   </Col>
                 </FormGroup>
 

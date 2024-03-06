@@ -253,6 +253,7 @@ const ServicesPost = (props) => {
                     <th>Sr. No.</th>
                     <th>Type</th>
                     <th>Title</th>
+                    <th>Added By</th>
                     <th style={{ float: "right" }}>Action</th>
                   </tr>
                 </thead>
@@ -265,6 +266,7 @@ const ServicesPost = (props) => {
                             {obj.type}
                           </td>
                           <td>{obj.name}</td>
+                          <td><span className={"badge badge-"+(obj.uploadedby && obj.uploadedby != '' ? 'danger' : 'info')}>{obj.uploadedby && obj.uploadedby != '' ? 'User' : 'Admin'}</span></td>
                           <td align="right">
                             <Link
                               to={{

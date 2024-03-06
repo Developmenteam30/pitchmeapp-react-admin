@@ -20,7 +20,7 @@ import swal from "sweetalert";
 import { deleteUser, getUserList } from "../../actions/userActions";
 
 const User = (props) => {
-  const { getUserList, user_details, deleteUser } = props;
+  const { getUserList, posts, deleteUser } = props;
   const [search, setSearch] = useState("");
   const [pageLimit, setPageLimit] = useState(10);
   const [pageLength, setPageLength] = useState(1);
@@ -138,8 +138,8 @@ const User = (props) => {
     );
   };
 
-  const { userDetail, userDetailLoading } = user_details;
-  let { page } = userDetail;
+  const { allUser, userDetailLoading } = posts;
+  let { page } = allUser;
   page = page - 1;
 
   return (
@@ -154,7 +154,7 @@ const User = (props) => {
             <CardBody>
               <Col md="12">
                 <Row>
-                  <Col md="12">
+                  {/* <Col md="12">
                     <div className="text-right">
                       <Tooltip
                         title="Add User"
@@ -171,7 +171,7 @@ const User = (props) => {
                         </Link>
                       </Tooltip>
                     </div>
-                  </Col>
+                  </Col> */}
                   <Col md="6" className="pl-0">
                     <div className="text-left">
                       <span className="">Show</span>
@@ -209,22 +209,24 @@ const User = (props) => {
                     <th>No.</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>User Type</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {userDetail &&
-                  userDetail.docs.length > 0 &&
+                  {allUser &&
+                  allUser.docs.length > 0 &&
                   !userDetailLoading ? (
-                    userDetail.docs.map((user, i) => (
+                    allUser.docs.map((user, i) => (
                       <tr key={i}>
                         <td>{page * pageLength + (i + 1)}</td>
                         <td>
-                          {user.first_name} {user.last_name}
+                          {user.username}
                         </td>
                         <td>{user.email}</td>
+                        <td>{user.log_type ? ( user.log_type == 1 ? 'Business idea' : user.log_type == 2 ? 'Business owner' : user.log_type == 3 ? 'Investor' : user.log_type == 4 ? 'Service Provider' : user.log_type == 5 ? 'Admin' : 'Not selected yet' ) : 'Not selected yet' }</td>
                         <td>
-                          <Link to={`/user/view/${user._id}`}>
+                          {/* <Link to={`/user/view/${user._id}`}>
                             <Tooltip
                               title="View User"
                               position="bottom"
@@ -258,7 +260,25 @@ const User = (props) => {
                                 <i className="fa fa-pencil"></i>
                               </Button>
                             </Tooltip>
-                          </Link>
+                          </Link> */}
+                          {user.bot && user.bot == 1 ? (
+                          <Tooltip
+                            title="Can not Delete User"
+                            position="bottom"
+                            arrow={true}
+                            distance={15}
+                            trigger="mouseenter"
+                          >
+                            <Button
+                              size="md"
+                              className="btn-youtube btn-brand ml-2"
+                              type="button"
+                            >
+                              ADMIN USER
+                            </Button>
+                          </Tooltip>
+                          ) : (
+
                           <Tooltip
                             title="Delete User"
                             position="bottom"
@@ -272,9 +292,10 @@ const User = (props) => {
                               onClick={() => onDeleteUser(user)}
                               type="button"
                             >
-                              <i className="fa fa-trash"></i>
+                              <i className="fa fa-remove" style={{color: 'white'}}></i>
                             </Button>
                           </Tooltip>
+                          )}
                         </td>
                       </tr>
                     ))
@@ -284,7 +305,7 @@ const User = (props) => {
                         <Spinner type="grow" />
                       </td>
                     </tr>
-                  ) : userDetail.docs.length === 0 && !userDetailLoading ? (
+                  ) : allUser.docs.length === 0 && !userDetailLoading ? (
                     <tr>
                       <td colSpan="6" className="middle-align text-center">
                         No User found
@@ -303,7 +324,7 @@ const User = (props) => {
               </Table>
               <div className="row float-right">
                 <div className="col-md-12 ">
-                  {paginationSection(userDetail)}
+                  {paginationSection(allUser)}
                 </div>
               </div>
             </CardBody>
@@ -315,7 +336,7 @@ const User = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  user_details: state.user_details,
+  posts: state.posts,
 });
 export default connect(mapStateToProps, {
   getUserList,

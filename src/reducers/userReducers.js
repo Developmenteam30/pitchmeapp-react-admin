@@ -1,4 +1,5 @@
 import {
+  USER_DETAIL,
   USER_DETAILS,
   USER_LIST,
   USER_POST,
@@ -161,6 +162,8 @@ const initialState = {
 const userDetailReducers = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case USER_DETAIL:
+      return { ...state, userDetailLoading: false, allUser: payload };
     case USER_DETAILS:
       return { ...state, userDetailLoading: false, post: payload };
     case USER_LIST:

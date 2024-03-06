@@ -154,25 +154,25 @@ const Settings = (props) => {
     errorno_of_businessideas = checkRequiredValidationWithMinMaxNumber(
       no_of_businessideas,
       "No of Business Idea",
-      1,
+      0,
       99999999
     );
     errorbusinessideas_daily_increase = checkRequiredValidationWithMinMaxNumber(
       businessideas_daily_increase,
       "How much to increase daily",
-      1,
+      0,
       99999999
     );
     errorno_of_facilitator = checkRequiredValidationWithMinMaxNumber(
       no_of_facilitator,
       "No of Facilitator",
-      1,
+      0,
       99999999
     );
     errorfacilitator_daily_increase = checkRequiredValidationWithMinMaxNumber(
       facilitator_daily_increase,
       "How much to increase daily",
-      1,
+      0,
       99999999
     );
 
@@ -180,91 +180,91 @@ const Settings = (props) => {
     errInvestors = checkRequiredValidationWithMinMaxNumber(
       no_of_investor,
       "No of Investors",
-      1,
+      0,
       99999999
     );
 
     errHowMuchInvestors = checkRequiredValidationWithMinMaxNumber(
       how_much_investor,
       "How much to increase daily",
-      1,
+      0,
       99999999
     );
 
     errBusinesses = checkRequiredValidationWithMinMaxNumber(
       businesses,
       "No of buseinesses",
-      1,
+      0,
       99999999
     );
 
     errHowMuchBusinesses = checkRequiredValidationWithMinMaxNumber(
       how_much_businesses,
       "How much to increase daily",
-      1,
+      0,
       99999999
     );
 
     errRaisedFunds = checkRequiredValidationWithMinMaxNumber(
       raised_funds,
       "No of raised funds",
-      1,
+      0,
       99999999
     );
 
     errHowMuchRaisedFunds = checkRequiredValidationWithMinMaxNumber(
       how_much_raised,
       "How much to increase daily",
-      1,
+      0,
       99999999
     );
 
     errVerifiedFunds = checkRequiredValidationWithMinMaxNumber(
       verified_funds,
       "No of verified funds",
-      1,
+      0,
       99999999
     );
 
     errHowMuchVerifiedFunds = checkRequiredValidationWithMinMaxNumber(
       how_much_verified,
       "How much to increase daily",
-      1,
+      0,
       99999999
     );
 
     errCities = checkRequiredValidationWithMinMaxNumber(
       cities,
       "No of cities",
-      1,
+      0,
       99999999
     );
 
     errHowMuchCities = checkRequiredValidationWithMinMaxNumber(
       how_much_cities,
       "How much to increase daily",
-      1,
+      0,
       99999999
     );
 
     errCountires = checkRequiredValidationWithMinMaxNumber(
       countries,
       "No of countries",
-      1,
+      0,
       99999999
     );
 
     errHowMuchCountries = checkRequiredValidationWithMinMaxNumber(
       how_much_countries,
       "How much to increase daily",
-      1,
+      0,
       99999999
     );
 
     errContinents = checkRequiredValidationWithMinMaxNumber(
       no_of_continents,
       "No of continents",
-      1,
+      0,
       99999999
     );
 

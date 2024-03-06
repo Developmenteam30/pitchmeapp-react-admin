@@ -159,9 +159,9 @@ const routes = [
     component: Notification,
   },
   {
-    path: "/posts",
+    path: "/users",
     exact: true,
-    name: "Posts",
+    name: "users",
     component: User,
   },
   {

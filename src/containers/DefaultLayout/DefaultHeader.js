@@ -83,9 +83,9 @@ const DefaultHeader = (props) => {
               className="icon-bell"
               style={{ color: "white", fontSize: "20px" }}
             ></i>
-            <Badge pill color="danger">
-              {/* {notification.totalDocs} */}6
-            </Badge>
+            {/* <Badge pill color="danger">
+              6
+            </Badge> */}
           </DropdownToggle>
 
           {/* <DropdownMenu right style={{ width: "350px" }}>

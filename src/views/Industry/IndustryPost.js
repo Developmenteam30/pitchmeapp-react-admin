@@ -260,6 +260,7 @@ const IndustryPost = (props) => {
                   <tr className="postsRow">
                     <th>Sr. No.</th>
                     <th>Industry name</th>
+                    <th>Added By</th>
                     <th style={{ float: "right" }} className="pr-5">Action</th>
                   </tr>
                 </thead>
@@ -269,6 +270,7 @@ const IndustryPost = (props) => {
                         <tr key={indx}>
                           <td>{page * 10 + indx + 1}</td>
                           <td>{obj.name}</td>
+                          <td><span className={"badge badge-"+(obj.uploadedby && obj.uploadedby != '' ? 'danger' : 'info')}>{obj.uploadedby && obj.uploadedby != '' ? 'User' : 'Admin'}</span></td>
                           <td  align="right"  style={{paddingRight:30}}>
                             <Link
                               to={{

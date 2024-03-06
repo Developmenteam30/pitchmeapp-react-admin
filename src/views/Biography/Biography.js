@@ -196,7 +196,7 @@ const Biography = (props) => {
                       </Tooltip>
                     </div>
                   </Col> */}
-                  <Col md="6" className="pl-0">
+                  <Col md="2" className="pl-0">
                     <div className="text-left">
                       <span className="">Show</span>
                       <select
@@ -213,7 +213,7 @@ const Biography = (props) => {
                       </select>
                     </div>
                   </Col>
-                  <Col md="6" className="pr-0">
+                  <Col md="5" className="pr-0">
                     <div className="text-right">
                       <span className="">Filter By : </span>
                       <select
@@ -230,6 +230,18 @@ const Biography = (props) => {
                       </select>
                     </div>
                   </Col>
+                  <Col md="5" className="pr-0">
+                    <div className="text-right">
+                      <span className="">Search : </span>
+                      <input
+                        type="text"
+                        name="search"
+                        className="form-control w-50 input  d-inline"
+                        onKeyPress={(e) => onFieldKeyPress(e)}
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                    </div>
+                  </Col>
 
                 </Row>
               </Col>
@@ -242,12 +254,13 @@ const Biography = (props) => {
                     <th>ID Status</th>
                     <th>Skill Certificate Status</th>
                     <th>Proof Funds Status</th>
+                    <th>Details Status</th>
                     <th style={{ float: "right" }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {biography && biography.docs.length
-                    ? biography.docs.map((obj, indx) => (
+                    ? search && search != "" ? biography.docs.map((obj, indx) => obj.user && obj.user.username.indexOf(search) > -1 && (
                         <tr key={indx} style={{display: type && type != '' && obj.status != type ? 'none' : ''}}>
                           <td>{page * 10 + indx + 1}</td>
                           <td>{obj.user ? obj.user.username : ''}</td>
@@ -255,6 +268,58 @@ const Biography = (props) => {
                           <td>{obj.Identitystatus == '1' ? 'Pending' : obj.Identitystatus == '2' ? 'Verified' : 'Not Verified'}</td>
                           <td>{obj.SkillCertificatestatus == '1' ? 'Pending' : obj.SkillCertificatestatus == '2' ? 'Verified' : 'Not Verified'}</td>
                           <td>{obj.ProofFundsstatus == '1' ? 'Pending' : obj.ProofFundsstatus == '2' ? 'Verified' : 'Not Verified'}</td>
+                          <td>{obj.textstatus == '1' ? 'Pending' : obj.textstatus == '2' ? 'Verified' : 'Not Verified'}</td>
+                          <td align="right">
+                            <Link
+                              to={{
+                                pathname: `/Biography/edit/${obj._id}`,
+                                state: { obj },
+                              }}
+                            >
+                              <Tooltip
+                                title="Edit Sales Pitch"
+                                position="bottom"
+                                arrow={true}
+                                distance={15}
+                                trigger="mouseenter"
+                              >
+                                <Button
+                                  size="md"
+                                  className="btn-spotify btn-brand ml-2"
+                                  type="button"
+                                >
+                                  <i className="fa fa-pencil"></i>
+                                </Button>
+                              </Tooltip>
+                            </Link>
+                            <Tooltip
+                              title="Delete Post"
+                              position="bottom"
+                              arrow={true}
+                              distance={15}
+                              trigger="mouseenter"
+                            >
+                              <Button
+                                size="md"
+                                className="ml-2 btn-danger"
+                                onClick={() => ondeleteUserBiography(obj)}
+                                type="button"
+                              >
+                                <i className="fa fa-trash-o" aria-hidden="true"></i>
+                              </Button>
+                            </Tooltip>
+                          </td>
+                        </tr>
+                      )) :
+                      biography.docs.map((obj, indx) => obj.user && (
+                        <tr key={indx} style={{display: type && type != '' && obj.status != type ? 'none' : ''}}>
+                          <td>{page * 10 + indx + 1}</td>
+                          <td>{obj.user ? obj.user.username : ''}</td>
+                          <td>{obj.status == '1' ? 'Pending' : obj.status == '2' ? 'Verified' : 'Not Verified'}</td>
+                          <td>{obj.Identitystatus == '1' ? 'Pending' : obj.Identitystatus == '2' ? 'Verified' : 'Not Verified'}</td>
+                          <td>{obj.SkillCertificatestatus == '1' ? 'Pending' : obj.SkillCertificatestatus == '2' ? 'Verified' : 'Not Verified'}</td>
+                          <td>{obj.ProofFundsstatus == '1' ? 'Pending' : obj.ProofFundsstatus == '2' ? 'Verified' : 'Not Verified'}</td>
+                          <td>{obj.textstatus == '1' ? 'Pending' : obj.textstatus == '2' ? 'Verified' : 'Not Verified'}</td>
                           <td align="right">
                             <Link
                               to={{

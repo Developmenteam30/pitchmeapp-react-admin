@@ -44,5 +44,10 @@ export default {
       url: "/settings",
       icon: "icon-settings",
     },
+    {
+      name: "Users",
+      url: "/users",
+      icon: "icon-people",
+    },
   ],
 };

@@ -17,20 +17,20 @@ import {
   Table,
 } from "reactstrap";
 import swal from "sweetalert";
-import { addNewPost, getUserList, deletePost } from "../../actions/userActions";
+import { addNewPost, getPostList, deletePost } from "../../actions/userActions";
 import img from "../../assets/img/8.jpg";
 import vid from "../../assets/img/XRecorder_31032022_110516.mp4";
 
 const User = (props) => {
-  const { getUserList, posts, deletePost } = props;
+  const { getPostList, posts, deletePost } = props;
   const [search, setSearch] = useState("");
   const [pageLimit, setPageLimit] = useState(10);
   const [pageLength, setPageLength] = useState(1);
   const [type, setType] = useState("");
 
   useEffect(() => {
-    getUserList(pageLength, pageLimit, "", type);
-  }, [pageLength, pageLimit, getUserList, type]);
+    getPostList(pageLength, pageLimit, "", type);
+  }, [pageLength, pageLimit, getPostList, type]);
 
   const onDeletePost = (post) => {
     swal({
@@ -44,7 +44,7 @@ const User = (props) => {
         deletePost(post._id)
           .then((result) => {
             toast.success(result.data.message);
-            getUserList(pageLength, pageLimit, "", type);
+            getPostList(pageLength, pageLimit, "", type);
           })
           .catch((err) => {
             if (err.response !== undefined) {
@@ -58,18 +58,18 @@ const User = (props) => {
   const onFieldKeyPress = (e) => {
     if (e.target.name === "search") {
       if (e.key === "Enter") {
-        getUserList(pageLength, pageLimit, e.target.value, type);
+        getPostList(pageLength, pageLimit, e.target.value, type);
       }
     }
   };
 
   const onPageClick = (page) => {
-    getUserList(page, pageLimit, "", type);
+    getPostList(page, pageLimit, "", type);
   };
 
   const handleClearSearch = () => {
     setSearch("");
-    getUserList(pageLength, pageLimit, "", type);
+    getPostList(pageLength, pageLimit, "", type);
   };
 
   const paginationSection = (data) => {
@@ -253,6 +253,7 @@ const User = (props) => {
                     <th>Sr. No.</th>
                     {/* <th>Title</th> */}
                     <th>Type</th>
+                    <th>Tags</th>
                     <th>Category</th>
                     <th style={{ float: "right" }}>Action</th>
                   </tr>
@@ -269,6 +270,9 @@ const User = (props) => {
                               : obj.type == 2
                               ? "Image"
                               : "Video"}
+                          </td>
+                          <td style={{width: '100px'}}>
+                            {obj.tags}
                           </td>
                           <td>
                             {obj.category}
@@ -466,6 +470,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  getUserList,
+  getPostList,
   deletePost,
 })(User);

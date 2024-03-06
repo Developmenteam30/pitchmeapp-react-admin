@@ -235,6 +235,7 @@ console.log(salespitch);
                     <th>Industry</th>
                     <th>Location</th>
                     <th>Description</th>
+                    <th>Created At</th>
                     <th>Status</th>
                     <th style={{ float: "right" }}>Action</th>
                   </tr>
@@ -249,7 +250,8 @@ console.log(salespitch);
                           <td>{obj.industry}</td>
                           <td>{obj.location}</td>
                           <td>{obj.description}</td>
-                          <td>{obj.status == '1' ? 'Pending' : obj.status == '2' ? 'Approved' : 'Rejected'}</td>
+                          <td>{ (new Date(obj.createdAt)).toLocaleDateString()+' '+(new Date(obj.createdAt)).toLocaleTimeString()}</td>
+                          <td>{obj.status == '1' ? 'Pending' : obj.status == '2' ? 'Approved' : obj.status == '5' ? 'Expired' : 'Rejected'}</td>
                           <td align="right">
                             <Link
                               to={{

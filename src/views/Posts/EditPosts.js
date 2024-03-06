@@ -32,6 +32,7 @@ const EditPosts = (props) => {
       setPostData(data[0]);
       // setTitle(res.data.result[0].title);
       setContent(res.data.result[0].text);
+      settags(res.data.result[0].tags);
       setType(res.data.result[0].type);
       setCurrentFile(res.data.result[0].file);
       if(res.data.result[0].category){
@@ -57,6 +58,7 @@ const EditPosts = (props) => {
   // const getTypeName = currentPost?.type;
 
   const [title, setTitle] = useState();
+  const [tags, settags] = useState();
   const [content, setContent] = useState();
   const [saveLoading, setSaveLoading] = useState(false);
   const [type, setType] = useState();
@@ -73,6 +75,7 @@ const EditPosts = (props) => {
     { value: 'Strategies', label: 'Strategies' },
     { value: 'Motivational', label: 'Motivational' },
     { value: 'Success Stories', label: 'Success Stories' },
+    { value: 'Ads', label: 'Ads' },
   ]
 
   const [errors, seterrors] = useState({
@@ -83,6 +86,10 @@ const EditPosts = (props) => {
 
   const onContentChange = (val) => {
     setContent(val);
+  };
+
+  const ontagsChange = (val) => {
+    settags(val);
   };
 
   const addFilesToDropzone = (files) => {
@@ -147,6 +154,16 @@ const EditPosts = (props) => {
     }
   };
 
+  const modulesTags = {
+    toolbar: [
+      ["bold", "italic", "underline"], // toggled buttons
+      ["blockquote", "link"],
+      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+      [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+      ["clean"], // remove formatting button
+    ],
+  };
+
   const modules = {
     toolbar: [
       ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -207,6 +224,7 @@ const EditPosts = (props) => {
         t += e.value+',';
       })
       t = t+']';
+      formData.append("tags", tags);
       formData.append("type", type);
       formData.append("category", t);
 
@@ -328,6 +346,27 @@ const EditPosts = (props) => {
                     )}
                   </Col>
                 </FormGroup>
+                
+                <FormGroup row>
+                  <Col xs="12">
+                    <label>
+                      Tags
+                    </label>
+                    <ReactQuill
+                      name="tags"
+                      placeholder="Enter Tags"
+                      value={tags ? tags : ''}
+                      onChange={(e) => ontagsChange(e)}
+                      modules={modulesTags}
+                      style={{
+                        insetInlineStart: "10",
+                        height: "250px",
+                        marginBottom: "59px",
+                      }}
+                    />
+                  </Col>
+                </FormGroup>
+
                 {type == 1 && (
                   <FormGroup row>
                     <Col xs="12">

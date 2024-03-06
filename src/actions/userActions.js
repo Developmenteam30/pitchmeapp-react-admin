@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  USER_DETAIL,
   USER_DETAILS,
   USER_LIST,
   USER_POST,
@@ -18,6 +19,35 @@ const PROXY = process.env.REACT_APP_URL + "api/";
 //user detail api
 
 export const getUserList = (page, limit, search, type) => async (dispatch) => {
+  console.log('loading data')
+  if (type === "All") {
+    const res = await axios.get(
+      PROXY + "user/all?page=" + page + "&limit=" + limit + "&search=" + search
+    );
+    dispatch({
+      type: USER_DETAIL,
+      payload: res.data.result,
+    });
+  } else {
+    const res = await axios.get(
+      PROXY +
+        "user/all?page=" +
+        page +
+        "&limit=" +
+        limit +
+        "&search=" +
+        search +
+        "&type=" +
+        type
+    );
+    dispatch({
+      type: USER_DETAIL,
+      payload: res.data.result,
+    });
+  }
+};
+
+export const getPostList = (page, limit, search, type) => async (dispatch) => {
   if (type === "All") {
     const res = await axios.get(
       PROXY + "post?page=" + page + "&limit=" + limit + "&search=" + search
