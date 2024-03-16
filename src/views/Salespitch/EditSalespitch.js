@@ -37,7 +37,11 @@ const EditSalespitch = (props) => {
         setimg2(data[0].img2);
         setimg3(data[0].img3);
         setimg4(data[0].img4);
-        setvid1(data[0].vid1);
+        if(data[0].vid1.indexOf('://') > -1){
+          setvid1(data[0].vid1);
+        }else{
+          setvid1('https://api.salespitchapp.com/'+data[0].vid1);
+        }
         setfile(data[0].file);
         var t = data[0].type.replaceAll('"', '').replaceAll("[", '').replaceAll(" ", '').replaceAll("]", '').split(",");
         var z = [];
@@ -193,14 +197,14 @@ const EditSalespitch = (props) => {
         // setUrl("");
         // setFileName("");
       }
-      if (imageSize > 10) {
+      if (imageSize > 15) {
         validationFlag = false;
         if (name == "img1") {
           setUrl1("");
           setFileName1("");
           setPreview1("");
           seterrors({
-            errorFile1: "Please select file less than 10 MB",
+            errorFile1: "Please select file less than 15 MB",
           });
         }
         if (name == "img2") {
@@ -208,7 +212,7 @@ const EditSalespitch = (props) => {
           setFileName2("");
           setPreview2("");
           seterrors({
-            errorFile2: "Please select file less than 10 MB",
+            errorFile2: "Please select file less than 15 MB",
           });
         }
         if (name == "img3") {
@@ -216,7 +220,7 @@ const EditSalespitch = (props) => {
           setFileName3("");
           setPreview3("");
           seterrors({
-            errorFile3: "Please select file less than 10 MB",
+            errorFile3: "Please select file less than 15 MB",
           });
         }
         if (name == "img4") {
@@ -224,7 +228,7 @@ const EditSalespitch = (props) => {
           setFileName4("");
           setPreview4("");
           seterrors({
-            errorFile4: "Please select file less than 10 MB",
+            errorFile4: "Please select file less than 15 MB",
           });
         }
         if (name == "file") {
@@ -232,7 +236,7 @@ const EditSalespitch = (props) => {
           setFileName5("");
           setPreview5("");
           seterrors({
-            errorFile5: "Please select file less than 10 MB",
+            errorFile5: "Please select file less than 15 MB",
           });
         }
         if (name == "vid1") {
@@ -240,7 +244,7 @@ const EditSalespitch = (props) => {
           setFileName6("");
           setPreview6("");
           seterrors({
-            errorFile6: "Please select file less than 10 MB",
+            errorFile6: "Please select file less than 15 MB",
           });
         }
       }
@@ -570,7 +574,7 @@ const EditSalespitch = (props) => {
                       <h5>Images</h5>
                       <label className="mt-1">
                           Note: Only jpeg, jpg, png and GIF file format only,
-                          Maximum 10MB file size allowed
+                          Maximum 15MB file size allowed
                       </label>
                     </Col>
                     <Col xs="3">
@@ -692,7 +696,7 @@ const EditSalespitch = (props) => {
                       <div>
                         <label className="mt-1">
                           Note: Only PDF file format only,
-                          Maximum 10MB file size allowed
+                          Maximum 15MB file size allowed
                         </label>
                       </div>
                       {file != "" && (
@@ -723,7 +727,7 @@ const EditSalespitch = (props) => {
                         className={classnames("form-control-file")}
                       />
                       <div className="mt-3">
-                        <label>Note: Maximum 10MB file size allowed</label>
+                        <label>Note: Maximum 15MB file size allowed</label>
                       </div>
                       {imagePreview6 && (
                         <video
