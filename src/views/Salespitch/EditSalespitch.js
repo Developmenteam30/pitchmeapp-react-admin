@@ -364,7 +364,7 @@ const EditSalespitch = (props) => {
       }else{
         formData.append("img44", img4.replace("https://api.salespitchapp.com/", ""));
       }
-      if (fileName5 != "" && fileName5.match(/\.(PNG||png||JPEG||jpeg||MP4||mp4||jpg||mov||MOV||gif||GIF)$/)) {
+      if (fileName5 != "" && fileName5.match(/\.(PNG||png||JPEG||jpeg||MP4||mp4||jpg||mov||MOV||gif||GIF||pdf||PDF)$/)) {
         formData.append("file", imagePreviewUrl5);
       }else{
         formData.append("file5", file.replace("https://api.salespitchapp.com/", ""));
